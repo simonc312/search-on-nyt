@@ -1,4 +1,4 @@
-package com.simonc312.trendingoninstagram;
+package com.simonc312.searchnyt;
 
 import org.junit.Test;
 

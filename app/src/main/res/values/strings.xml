@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Trending On Instagram</string>
-    <string name="client_id">e05c462ebd86446ea48a5af73769b602</string>
+    <string name="app_name">Search NY Times</string>
+    <string name="search_id">cea9a22362595278fb0cb720a607197a:4:74301097</string>
+    <string name="top_stories_id">3870faed54170b7df07426f339eb9f74:12:74301097</string>
+    <string name="popular_id">33b85f6537208d440f0dcbfa24c3d55d:3:74301097</string>
     <string name="action_layout_change">ACTION_LAYOUT_CHANGE</string>
     <string name="item_position_extra">ITEM_POSITION_EXTRA</string>
     <string name="search_hint">Search for users or tags</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
     <string name="action_back_pressed">ACTION_BACK_PRESSED</string>
     <string name="action_query_changed">action_query_changed</string>
 </resources>
