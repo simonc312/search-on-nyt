@@ -297,7 +297,7 @@ public class TrendingFragment extends Fragment
                     .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                     .forType(new TypeReference<List<Article>>() {});
             List<Article> articleList = reader.readValue(dataArray.toString());
-            adapter.addPosts(articleList, addToEnd);
+            adapter.update(articleList, addToEnd);
 
 
         } catch (JSONException e) {

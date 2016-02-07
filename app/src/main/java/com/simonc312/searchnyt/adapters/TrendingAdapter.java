@@ -68,18 +68,38 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
     }
 
     private void addPost(Article post, int position){
-        articleList.add(position,post);
+        articleList.add(position, post);
         notifyItemInserted(position);
     }
 
     public void addPosts(List<Article> posts, boolean addToEnd){
         int startIndex = addToEnd ? articleList.size() : 0;
         articleList.addAll(startIndex, posts);
-        notifyItemRangeChanged(startIndex,posts.size());
+        notifyItemRangeChanged(startIndex, posts.size());
     }
 
     public void setIsGridLayout(boolean isGridLayout){
         this.isGridLayout = isGridLayout;
+    }
+
+    public void update(List<Article> articleList, boolean addToEnd) {
+        if(addToEnd){
+            addPosts(articleList,addToEnd);
+        } else{
+            addNewPosts(articleList);
+        }
+    }
+
+    private void addNewPosts(List<Article> newList) {
+        List<Article> comparisonList;
+        if(newList.size() > articleList.size())
+            comparisonList = articleList;
+        else
+            comparisonList = this.articleList.subList(0, newList.size());
+        for(Article article : newList){
+            if(!comparisonList.contains(article))
+                addPost(article,0);
+        }
     }
 
     public interface PostItemListener {

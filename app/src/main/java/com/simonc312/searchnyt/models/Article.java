@@ -82,4 +82,31 @@ public class Article {
     public String getDisplayByline(){
         return String.format("%s",this.byline);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Article)) return false;
+
+        Article article = (Article) o;
+
+        if (title != null ? !title.equals(article.title) : article.title != null) return false;
+        if (byline != null ? !byline.equals(article.byline) : article.byline != null) return false;
+        if (publishedDate != null ? !publishedDate.equals(article.publishedDate) : article.publishedDate != null)
+            return false;
+        if (summary != null ? !summary.equals(article.summary) : article.summary != null)
+            return false;
+        return !(url != null ? !url.equals(article.url) : article.url != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title != null ? title.hashCode() : 0;
+        result = 31 * result + (byline != null ? byline.hashCode() : 0);
+        result = 31 * result + (publishedDate != null ? publishedDate.hashCode() : 0);
+        result = 31 * result + (summary != null ? summary.hashCode() : 0);
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        return result;
+    }
 }
