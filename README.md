@@ -1,5 +1,5 @@
-# trending-on-instagram
-Project Week 1 for Codepath Android Dev Bootcamp. 
+# Search on New York Times API
+Project Week 2 for Codepath Android Dev Bootcamp. 
 
 ![walkthrough gif](https://github.com/simonc312/trending-on-instagram/blob/master/screenCapture/TrendingOnInstagramWalkthrough.gif)
 
@@ -7,33 +7,35 @@ Project Week 1 for Codepath Android Dev Bootcamp.
 
 - Fetch:
 
-    1) like count
+    1) web_url
     
-    2) username
+    2) snippet
     
-    3) user profile pic
+    3) source
     
-    4) image url
+    4) headline
     
-    5) caption
+    5) keywords
     
-    6) time posted
+    6) pub_date
     
-    7) comments with usernames (TODO)
+    7) byline
+    
+    8) page
+    
+    9) lead_paragraph
+    
+    10) multimedia - thumbnail, standard, large image
+    
+    11) day_of_week - facet_field
     
 - Extra Features:
 
-    1) Searchview 
-    
-    2) Tab layout and view pager for People and Tags 
-    
-    3) View most recent posts by user or hashtag 
+    1) Searchview   
 
 - Style:
 
-    [x] Circle crop profile picture 
-    
-    [x] Add heart icon next to like count 
+    [x] Circle crop profile picture  
     
     [x] Format time posted to relative time 
     ex. Just Now, 1d, 2w, 3m, 1y etc 

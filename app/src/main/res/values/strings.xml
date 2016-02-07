@@ -6,7 +6,7 @@
     <string name="action_layout_change">ACTION_LAYOUT_CHANGE</string>
     <string name="item_position_extra">ITEM_POSITION_EXTRA</string>
     <string name="search_hint">Search for users or tags</string>
-    
+
     <string name="action_back_pressed">ACTION_BACK_PRESSED</string>
     <string name="action_query_changed">action_query_changed</string>
 </resources>
