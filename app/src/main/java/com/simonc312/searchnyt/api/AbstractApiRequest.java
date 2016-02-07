@@ -11,19 +11,21 @@ import org.json.JSONObject;
  */
 public abstract class AbstractApiRequest implements ApiRequestInterface {
     private RequestParams requestParams;
-    protected String CLIENT_ID = "e05c462ebd86446ea48a5af73769b602";
+    protected String RESPONSE_TYPE = "json";
     protected Context context;
     protected RequestListener listener;
+
     public AbstractApiRequest(Context context, RequestListener listener){
         this.context = context;
         this.listener = listener;
         requestParams = new RequestParams();
-        requestParams.add("client_id",CLIENT_ID);
     }
 
     protected void addParam(String key, String value){
         requestParams.add(key,value);
     }
+
+    abstract String getApiKey();
 
     @Override
     public String getUrl() {return "OVERRIDE URL";}
@@ -51,5 +53,10 @@ public abstract class AbstractApiRequest implements ApiRequestInterface {
     public interface RequestListener{
         void onSuccess(JSONObject response);
         void onFailure(String response);
+    }
+
+    @Override
+    public String toString(){
+        return String.format("url: %s \nkey: %s",getUrl(),getApiKey());
     }
 }

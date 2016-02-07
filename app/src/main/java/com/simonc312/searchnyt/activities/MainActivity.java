@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity
 
     private void setupSupportActionBar(){
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setHideOnContentScrollEnabled(true);
         getSupportActionBar().setShowHideAnimationEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }

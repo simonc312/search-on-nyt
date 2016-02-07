@@ -1,5 +1,7 @@
 package com.simonc312.searchnyt.api;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -25,6 +27,7 @@ public class ApiHandler {
     }
 
     public void sendRequest(final ApiRequestInterface request){
+        Log.d("request info",request.toString());
         client.get(
                 request.getContext(),
                 request.getUrl(),

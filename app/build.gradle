@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.simonc312.trendingoninstagram"
+        applicationId "com.simonc312.searchnyt"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1

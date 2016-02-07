@@ -18,8 +18,7 @@ import android.widget.Toast;
 import com.simonc312.searchnyt.adapters.SearchAdapter;
 import com.simonc312.searchnyt.api.AbstractApiRequest.RequestListener;
 import com.simonc312.searchnyt.api.ApiHandler;
-import com.simonc312.searchnyt.api.TagSearchApiRequest;
-import com.simonc312.searchnyt.api.UserNameSearchApiRequest;
+import com.simonc312.searchnyt.api.TopStoriesSearchApiRequest;
 import com.simonc312.searchnyt.models.SearchTag;
 import com.simonc312.searchnyt.models.UserTag;
 import com.simonc312.searchnyt.R;
@@ -104,26 +103,26 @@ public class SearchFragment extends Fragment {
     private void fetchAsyncDefault() {
         switch(searchType){
             case TAG_TYPE:
-                fetchTagSearchAsync(DEFAULT_TAG_QUERY);
+                //fetchTagSearchAsync(DEFAULT_TAG_QUERY);
                 break;
             case PEOPLE_TYPE:
                 fetchUserNameSearchAsync(DEFAULT_PEOPLE_QUERY);
                 break;
             default:
-                fetchTagSearchAsync(DEFAULT_TAG_QUERY);
+                break;
         }
     }
 
     private void fetchAsync(String query) {
         switch(searchType){
             case TAG_TYPE:
-                fetchTagSearchAsync(query);
+                //fetchTagSearchAsync(query);
                 break;
             case PEOPLE_TYPE:
                 fetchUserNameSearchAsync(query);
                 break;
             default:
-                fetchTagSearchAsync(query);
+                //fetchTagSearchAsync(query);
         }
     }
 
@@ -157,38 +156,8 @@ public class SearchFragment extends Fragment {
         mListener = null;
     }
 
-    private void fetchTagSearchAsync(String query){
-        TagSearchApiRequest request = new TagSearchApiRequest(getContext(), new RequestListener() {
-            @Override
-            public void onSuccess(JSONObject response) {
-                try {
-                    JSONArray dataArray = response.getJSONArray("data");
-                    List<SearchTag> newList = new ArrayList<>(dataArray.length());
-                    for(int i=0;i<dataArray.length();i++){
-                        JSONObject data = dataArray.getJSONObject(i);
-                        String name = data.getString("name");
-                        int postCount = data.getInt("media_count");
-                        SearchTag tag = new SearchTag(name,postCount);
-                        newList.add(tag);
-                    }
-                    adapter.update(newList);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(String response) {
-                Toast.makeText(getContext(),response,Toast.LENGTH_LONG).show();
-            }
-        });
-        request.setQuery(query);
-        ApiHandler.getInstance().sendRequest(request);
-    }
-
     private void fetchUserNameSearchAsync(String query){
-        UserNameSearchApiRequest request = new UserNameSearchApiRequest(getContext(), new RequestListener() {
+        TopStoriesSearchApiRequest request = new TopStoriesSearchApiRequest(getContext(), new RequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 try {

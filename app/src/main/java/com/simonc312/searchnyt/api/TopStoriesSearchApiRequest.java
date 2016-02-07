@@ -7,21 +7,31 @@ import org.json.JSONObject;
 /**
  * Created by Simon on 1/29/2016.
  */
-public class UserNameSearchApiRequest extends AbstractApiRequest {
-
+public class TopStoriesSearchApiRequest extends AbstractApiRequest {
+    private static String API_KEY = "3870faed54170b7df07426f339eb9f74:12:74301097";
     private String query;
-    public UserNameSearchApiRequest(Context context, RequestListener listener){
+    private String section;
+    public TopStoriesSearchApiRequest(Context context, RequestListener listener){
         super(context, listener);
-        query = "sleepgroper";
+        query = "elections";
+    }
+
+    @Override
+    String getApiKey() {
+        return API_KEY;
     }
 
     public void setQuery(String query){
         addParam("q",query);
     }
 
+    public void setSection(String section) {
+        this.section = section;
+    }
+
     @Override
     public String getUrl() {
-        return "https://api.instagram.com/v1/users/search?";
+        return String.format("http://api.nytimes.com/svc/topstories/v1/%s.%s",section, RESPONSE_TYPE);
     }
 
     @Override
@@ -33,5 +43,7 @@ public class UserNameSearchApiRequest extends AbstractApiRequest {
     public void processOnFailure(String response) {
         super.processOnFailure(response);
     }
+
+
 }
 

@@ -21,9 +21,7 @@ import com.simonc312.searchnyt.api.AbstractApiRequest;
 import com.simonc312.searchnyt.api.ApiRequestInterface;
 import com.simonc312.searchnyt.api.ApiHandler;
 import com.simonc312.searchnyt.api.PopularApiRequest;
-import com.simonc312.searchnyt.api.TagNameSearchApiRequest;
-import com.simonc312.searchnyt.api.UserProfileSearchApiRequest;
-import com.simonc312.searchnyt.models.PostData;
+import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.helpers.EndlessRVScrollListener;
 import com.simonc312.searchnyt.helpers.GridItemDecoration;
@@ -209,11 +207,9 @@ public class TrendingFragment extends Fragment
 
     private void fetchAsync() {
         if(query == null)
-            fetchTimelineAsync();
+            fetchPopularAsync();
         else{
-            if(queryType == SearchFragment.PEOPLE_TYPE)
-                fetchUserProfileSearchAsync(query);
-            else if(queryType == SearchFragment.TAG_TYPE)
+            if(queryType == SearchFragment.TAG_TYPE)
                 fetchTagNameSearchAsync(query);
         }
     }
@@ -262,20 +258,14 @@ public class TrendingFragment extends Fragment
         recyclerView.setAdapter(adapter);
     }
 
-    private void fetchTimelineAsync() {
+    private void fetchPopularAsync() {
         sendRequest(new PopularApiRequest(getContext(), this));
     }
 
     private void fetchTagNameSearchAsync(String tag){
-        TagNameSearchApiRequest request = new TagNameSearchApiRequest(getContext(),this);
+        /*TagNameSearchApiRequest request = new TagNameSearchApiRequest(getContext(),this);
         request.setTag(tag);
-        sendRequest(request);
-    }
-
-    private void fetchUserProfileSearchAsync(String userid){
-        UserProfileSearchApiRequest request = new UserProfileSearchApiRequest(getContext(),this);
-        request.setUserid(userid);
-        sendRequest(request);
+        sendRequest(request);*/
     }
 
     private void sendRequest(ApiRequestInterface request){
@@ -284,7 +274,7 @@ public class TrendingFragment extends Fragment
 
     private void handleSuccessResponse(JSONObject response) {
         try {
-            JSONArray dataArray = response.getJSONArray("data");
+            JSONArray dataArray = response.getJSONArray("results");
             // - type = "iv_image" or "video"
             // - caption.text
             // - images.standard_resolution.url
@@ -292,17 +282,15 @@ public class TrendingFragment extends Fragment
             // - likes.count
             for(int i=0; i<dataArray.length();i++){
                 JSONObject data = dataArray.getJSONObject(i);
-                if(data.getString("type").equals("image")){
-                    String username = data.getJSONObject("user").getString("username");
-                    String profileImageSource = data.getJSONObject("user").getString("profile_picture");
-                    String imageSource = data.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
-                    String caption = data.has("caption") && !data.isNull("caption") ? data.getJSONObject("caption").getString("text") : "";
-                    String likeCount = data.getJSONObject("likes").getString("count");
-                    String timePosted = data.getString("created_time");
-                    JSONArray comments = data.getJSONObject("comments").getJSONArray("data");
-                    PostData postData = new PostData(username, profileImageSource, likeCount, timePosted, caption, imageSource);
-                    adapter.addPost(postData, addToEnd);
-                }
+                    String title = data.getString("title");
+                    String byline = data.getString("byline");
+                    boolean hasMedia = data.has("media") && data.get("media") instanceof JSONArray;
+                    String imageSource = hasMedia? data.getJSONArray("media").getJSONObject(0).getJSONArray("media-metadata").getJSONObject(0).getString("url") : "null";
+                    String webUrl = data.getString("url");
+                    String summary = data.getString("abstract");
+                    String publishedDate = data.getString("published_date");
+                    Article article = new Article(title, webUrl, byline, publishedDate, summary, imageSource);
+                    adapter.addPost(article, addToEnd);
             }
 
         } catch (JSONException e) {

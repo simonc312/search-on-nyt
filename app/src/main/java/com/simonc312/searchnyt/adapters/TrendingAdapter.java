@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.simonc312.searchnyt.models.PostData;
+import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.viewHolders.GridViewHolder;
 import com.simonc312.searchnyt.viewHolders.TrendingPostViewHolder;
@@ -22,11 +22,11 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
     private final PostItemListener mListener;
     private Context mContext;
     private boolean isGridLayout;
-    private List<PostData> postDataList;
+    private List<Article> articleList;
 
 
     public TrendingAdapter(Context context, boolean isGridLayout,PostItemListener mListener){
-        postDataList = new ArrayList<>();
+        articleList = new ArrayList<>();
         this.mContext = context;
         this.isGridLayout = isGridLayout;
         this.mListener = mListener;
@@ -41,39 +41,39 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
 
     @Override
     public void onBindViewHolder(GridViewHolder holder, int position) {
-        PostData data = postDataList.get(position);
+        Article data = articleList.get(position);
         holder.setPostImage(data.getImageSource());
 
         if(!isGridLayout){
             TrendingPostViewHolder trendingPostViewHolder = (TrendingPostViewHolder) holder;
-            trendingPostViewHolder.setProfileImage(data.getProfileImageSource());
-            trendingPostViewHolder.setUsername(data.getUsername());
-            trendingPostViewHolder.setLikes(data.getDisplayLikeCount());
+            trendingPostViewHolder.setProfileImage(data.getWebUrl());
+            trendingPostViewHolder.setUsername(data.getTitle());
+            trendingPostViewHolder.setLikes(data.getDisplayByline());
             trendingPostViewHolder.setTimePosted(data.getRelativeTimePosted());
-            trendingPostViewHolder.setCaption(data.getCaption());
+            trendingPostViewHolder.setCaption(data.getSummary());
         }
     }
 
     @Override
     public int getItemCount() {
-        return postDataList.size();
+        return articleList.size();
     }
 
-    public void addPost(PostData post, boolean addToEnd){
+    public void addPost(Article post, boolean addToEnd){
         if(addToEnd){
-            addPost(post,postDataList.size());
+            addPost(post, articleList.size());
         } else{
             addPost(post,0);
         }
     }
 
-    private void addPost(PostData post, int position){
-        postDataList.add(position,post);
+    private void addPost(Article post, int position){
+        articleList.add(position,post);
         notifyItemInserted(position);
     }
 
-    public void addPosts(List<PostData> posts){
-        postDataList.addAll(0, posts);
+    public void addPosts(List<Article> posts){
+        articleList.addAll(0, posts);
         notifyDataSetChanged();
     }
 
