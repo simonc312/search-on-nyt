@@ -12,9 +12,22 @@ public class PopularApiRequest extends AbstractApiRequest {
     protected String TIME_PERIOD = "1";
     protected String RESOURCE_TYPE = "mostshared";
     protected String SECTION = "all-sections";
+    protected int ITEM_COUNT = 20;
     public PopularApiRequest(Context context,RequestListener listener){
         super(context,listener);
-        addParam("api-key",API_KEY);
+        putParam("api-key", API_KEY);
+    }
+
+    /**
+     * Determine which page of items to load
+     * @param page
+     */
+    public void setPage(int page){
+        setOffset(page * ITEM_COUNT);
+    }
+
+    private void setOffset(int offset){
+        putParam("offset", offset);
     }
 
     @Override

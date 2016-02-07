@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -36,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.BindInt;
@@ -73,6 +75,8 @@ public class TrendingFragment extends Fragment
     //determines where to add new posts
     private boolean addToEnd = false;
     private int queryType;
+    //determines which page to request
+    private int currentPage = 0;
 
     public TrendingFragment() {
         // Required empty public constructor
@@ -195,6 +199,7 @@ public class TrendingFragment extends Fragment
             @Override
             public void onRefresh() {
                 addToEnd = false;
+                currentPage = 0;
                 fetchAsync();
             }
         });
@@ -234,6 +239,7 @@ public class TrendingFragment extends Fragment
             @Override
             public void onLoadMore(int current_page) {
                 addToEnd = true;
+                currentPage = current_page;
                 fetchAsync();
             }
         });
@@ -266,7 +272,9 @@ public class TrendingFragment extends Fragment
     }
 
     private void fetchPopularAsync() {
-        sendRequest(new PopularApiRequest(getContext(), this));
+        PopularApiRequest request = new PopularApiRequest(getContext(), this);
+        request.setPage(currentPage);
+        sendRequest(request);
     }
 
     private void fetchTagNameSearchAsync(String tag){
@@ -282,22 +290,15 @@ public class TrendingFragment extends Fragment
     private void handleSuccessResponse(JSONObject response) {
         try {
             JSONArray dataArray = response.getJSONArray("results");
-            // - type = "iv_image" or "video"
-            // - caption.text
-            // - images.standard_resolution.url
-            // - user.username
-            // - likes.count
             ObjectReader reader = new ObjectMapper()
                     .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
                     .reader()
                     .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-                    .forType(Article.class);
-            for(int i=0; i<dataArray.length();i++){
-                JSONObject data = dataArray.getJSONObject(i);
-                Article article = reader.readValue(data.toString());
-                adapter.addPost(article, addToEnd);
-            }
+                    .forType(new TypeReference<List<Article>>() {});
+            List<Article> articleList = reader.readValue(dataArray.toString());
+            adapter.addPosts(articleList, addToEnd);
+
 
         } catch (JSONException e) {
             e.printStackTrace();

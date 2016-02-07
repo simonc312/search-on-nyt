@@ -21,9 +21,11 @@ public abstract class AbstractApiRequest implements ApiRequestInterface {
         requestParams = new RequestParams();
     }
 
-    protected void addParam(String key, String value){
+    protected void putParam(String key, String value){
         requestParams.add(key,value);
     }
+
+    protected void putParam(String key, int value){ requestParams.put(key,value);}
 
     abstract String getApiKey();
 

@@ -72,13 +72,10 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
         notifyItemInserted(position);
     }
 
-    public void addPosts(List<Article> posts){
-        articleList.addAll(0, posts);
-        notifyDataSetChanged();
-    }
-
-    public boolean isGridLayout(){
-        return isGridLayout;
+    public void addPosts(List<Article> posts, boolean addToEnd){
+        int startIndex = addToEnd ? articleList.size() : 0;
+        articleList.addAll(startIndex, posts);
+        notifyItemRangeChanged(startIndex,posts.size());
     }
 
     public void setIsGridLayout(boolean isGridLayout){

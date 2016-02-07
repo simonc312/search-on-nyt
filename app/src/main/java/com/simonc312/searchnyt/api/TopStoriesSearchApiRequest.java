@@ -22,7 +22,7 @@ public class TopStoriesSearchApiRequest extends AbstractApiRequest {
     }
 
     public void setQuery(String query){
-        addParam("q",query);
+        putParam("q", query);
     }
 
     public void setSection(String section) {
