@@ -16,6 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.simonc312.searchnyt.adapters.TrendingAdapter;
 import com.simonc312.searchnyt.api.AbstractApiRequest;
 import com.simonc312.searchnyt.api.ApiRequestInterface;
@@ -29,6 +34,8 @@ import com.simonc312.searchnyt.helpers.GridItemDecoration;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.BindInt;
@@ -280,20 +287,23 @@ public class TrendingFragment extends Fragment
             // - images.standard_resolution.url
             // - user.username
             // - likes.count
+            ObjectReader reader = new ObjectMapper()
+                    .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
+                    .reader()
+                    .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+                    .forType(Article.class);
             for(int i=0; i<dataArray.length();i++){
                 JSONObject data = dataArray.getJSONObject(i);
-                    String title = data.getString("title");
-                    String byline = data.getString("byline");
-                    boolean hasMedia = data.has("media") && data.get("media") instanceof JSONArray;
-                    String imageSource = hasMedia? data.getJSONArray("media").getJSONObject(0).getJSONArray("media-metadata").getJSONObject(0).getString("url") : "null";
-                    String webUrl = data.getString("url");
-                    String summary = data.getString("abstract");
-                    String publishedDate = data.getString("published_date");
-                    Article article = new Article(title, webUrl, byline, publishedDate, summary, imageSource);
-                    adapter.addPost(article, addToEnd);
+                Article article = reader.readValue(data.toString());
+                adapter.addPost(article, addToEnd);
             }
 
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

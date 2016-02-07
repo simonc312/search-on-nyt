@@ -1,34 +1,36 @@
 package com.simonc312.searchnyt.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+
 /**
  * Created by Simon on 1/27/2016.
  */
 public class Article {
 
-    private String title;
-    private String byline;
-    private String publishedDate;
-    private String summary;
-    private String imageSource;
-    private String webUrl;
+    private final String title;
+    private final String byline;
+    private final String publishedDate;
+    private final String summary;
+    private final String url;
+    public List<Media> media;
 
-
-    public Article(){
-        this.title = "Cancer Cure Found";
-        this.byline = "by Simon Chen";
-        this.publishedDate = "2010-08-31";
-        this.summary = "Abstract summary summary";
-        this.imageSource = "iv_image source";
-        this.webUrl = "web url";
-    }
-
-    public Article(String title, String webUrl, String byline, String publishedDate, String summary, String imageSource){
+    @JsonCreator
+    public Article(
+            @JsonProperty(value = "title") String title,
+            @JsonProperty(value = "url") String url,
+            @JsonProperty(value = "byline") String byline,
+            @JsonProperty(value = "published_date") String publishedDate,
+            @JsonProperty(value = "abstract") String summary,
+            @JsonProperty(value = "media") List<Media> media){
         this.title = title;
-        this.webUrl = webUrl;
+        this.url = url;
         this.byline = byline;
         this.publishedDate = publishedDate;
         this.summary = summary;
-        this.imageSource = imageSource;
+        this.media = media;
     }
 
     public String getTitle() {
@@ -44,15 +46,22 @@ public class Article {
     }
 
     public String getImageSource() {
-        return imageSource;
+        String source = "empty";
+        if(media != null){
+            for(int i=0;i<media.size();i++){
+                Media m = media.get(i);
+                source = m.getAnyImageUrl();
+            }
+        }
+            return source;
     }
 
     public String getSummary() {
         return summary;
     }
 
-    public String getWebUrl() {
-        return webUrl;
+    public String getUrl() {
+        return url;
     }
 
     public String getRelativeTimePosted(){
