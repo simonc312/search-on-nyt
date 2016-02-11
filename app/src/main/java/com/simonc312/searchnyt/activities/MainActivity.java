@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity
         implements TrendingFragment.InteractionListener{
     @BindString(R.string.action_back_pressed)String ACTION_BACK_PRESSED;
+    @BindString(R.string.app_name_title) String APP_NAME_TITLE;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     private LayoutChangeBroadcastReciever broadcastReciever;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupSupportActionBar();
-        setTitleFont();
+        setTitle();
         broadcastReciever = new LayoutChangeBroadcastReciever();
         swapFragment(TrendingFragment.newInstance(true, null,TrendingFragment.TRENDING_TYPE));
 
@@ -54,10 +55,11 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
-    private void setTitleFont(){
+    private void setTitle(){
         TextView tx = (TextView)findViewById(R.id.app_name);
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/EnglishTowne.ttf");
         tx.setTypeface(custom_font);
+        tx.setText(APP_NAME_TITLE);
     }
 
     @Override

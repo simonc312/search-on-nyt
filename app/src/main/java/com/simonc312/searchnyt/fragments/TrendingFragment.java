@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -27,6 +28,7 @@ import com.simonc312.searchnyt.api.AbstractApiRequest;
 import com.simonc312.searchnyt.api.ApiRequestInterface;
 import com.simonc312.searchnyt.api.ApiHandler;
 import com.simonc312.searchnyt.api.PopularApiRequest;
+import com.simonc312.searchnyt.helpers.HorizontalDividerItemDecoration;
 import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.helpers.EndlessRVScrollListener;
@@ -70,7 +72,8 @@ public class TrendingFragment extends Fragment
     private BackPressedBroadcastListener backPressedListener;
     private TrendingAdapter adapter;
     private boolean useGridLayout;
-    private RecyclerView.ItemDecoration itemDecoration;
+    private RecyclerView.ItemDecoration gridItemDecoration;
+    private RecyclerView.ItemDecoration horizontalItemDecoration;
     private String query;
     //determines where to add new posts
     private boolean addToEnd = false;
@@ -231,8 +234,13 @@ public class TrendingFragment extends Fragment
             adapter = new TrendingAdapter(context,useGridLayout,this);
         }
 
-        if(itemDecoration == null){
-            itemDecoration = new GridItemDecoration(GRID_LAYOUT_SPAN_COUNT,GRID_LAYOUT_ITEM_SPACING,false);
+        if(gridItemDecoration == null){
+            gridItemDecoration = new GridItemDecoration(GRID_LAYOUT_SPAN_COUNT,GRID_LAYOUT_ITEM_SPACING,false);
+        }
+
+        if(horizontalItemDecoration == null){
+            Drawable drawable = getActivity().getResources().getDrawable(android.R.drawable.divider_horizontal_bright);
+            horizontalItemDecoration = new HorizontalDividerItemDecoration(drawable);
         }
 
         recyclerView.addOnScrollListener(new EndlessRVScrollListener() {
@@ -264,11 +272,17 @@ public class TrendingFragment extends Fragment
     private void updateRV(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, RecyclerView.Adapter adapter){
         //need to remove it otherwise
         if(layoutManager instanceof GridLayoutManager)
-            recyclerView.addItemDecoration(itemDecoration);
+            updateItemDecoration(gridItemDecoration,horizontalItemDecoration);
         else
-            recyclerView.removeItemDecoration(itemDecoration);
+            updateItemDecoration(horizontalItemDecoration, gridItemDecoration);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void updateItemDecoration(RecyclerView.ItemDecoration newDecoration, RecyclerView.ItemDecoration oldDecoration){
+        if(oldDecoration != null && newDecoration != null)
+        recyclerView.removeItemDecoration(oldDecoration);
+        recyclerView.addItemDecoration(newDecoration);
     }
 
     private void fetchPopularAsync() {

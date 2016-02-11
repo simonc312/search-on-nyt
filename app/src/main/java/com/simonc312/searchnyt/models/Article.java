@@ -10,21 +10,25 @@ import java.util.List;
  */
 public class Article {
 
+    private final String section;
     private final String title;
     private final String byline;
     private final String publishedDate;
     private final String summary;
     private final String url;
+
     public List<Media> media;
 
     @JsonCreator
     public Article(
+            @JsonProperty(value = "section") String section,
             @JsonProperty(value = "title") String title,
             @JsonProperty(value = "url") String url,
             @JsonProperty(value = "byline") String byline,
             @JsonProperty(value = "published_date") String publishedDate,
             @JsonProperty(value = "abstract") String summary,
             @JsonProperty(value = "media") List<Media> media){
+        this.section = section;
         this.title = title;
         this.url = url;
         this.byline = byline;
@@ -32,6 +36,8 @@ public class Article {
         this.summary = summary;
         this.media = media;
     }
+
+    public String getSection(){return section;};
 
     public String getTitle() {
         return title;

@@ -1,5 +1,7 @@
 package com.simonc312.searchnyt.models;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,7 +33,7 @@ public class Media {
     }
 
     public MediaMetaData getStandard() {
-        return getImageType("medium");
+        return getImageType("mediumThreeByTwo440");
     }
 
     /**
@@ -40,8 +42,9 @@ public class Media {
      * @return
      */
     private MediaMetaData getImageType(String type) {
-        for (int i = metaDataList.size()-1; i >=0; i--) {
+        for (int i = 0; i <metaDataList.size(); i++) {
             MediaMetaData image = metaDataList.get(i);
+            Log.d("MediaMetaData format",image.format);
             if (image.format.contains(type))
                 return image;
         }

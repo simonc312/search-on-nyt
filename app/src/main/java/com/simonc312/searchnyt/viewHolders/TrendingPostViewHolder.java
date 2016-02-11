@@ -1,12 +1,10 @@
 package com.simonc312.searchnyt.viewHolders;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import com.simonc312.searchnyt.adapters.TrendingAdapter;
-import com.simonc312.searchnyt.helpers.ImageLoaderHelper;
 import com.simonc312.searchnyt.R;
 
 import butterknife.Bind;
@@ -17,39 +15,32 @@ import butterknife.ButterKnife;
  */
 public class TrendingPostViewHolder extends GridViewHolder {
 
-    @Bind(R.id.iv_profile)
-    ImageView iv_profile;
-    @Bind(R.id.tv_username)
-    TextView tv_username;
-    @Bind(R.id.tv_time_posted)
-    TextView timePosted;
-    @Bind(R.id.tv_likes)
-    TextView tv_likes;
-    @Bind(R.id.tv_caption)
-    TextView tv_caption;
+    @Bind(R.id.tv_section)
+    TextView tv_section;
+    @Bind(R.id.tv_headline)
+    TextView tv_headline;
+    @Bind(R.id.tv_published_date)
+    TextView publishedDate;
 
     public TrendingPostViewHolder(View itemView,TrendingAdapter.PostItemListener listener) {
         super(itemView,listener);
         ButterKnife.bind(this, itemView);
     }
 
-    public void setLikes(String likes) {
-        tv_likes.setText(likes);
+    public void setHeadline(String headline){
+        tv_headline.setText(headline);
     }
 
-    public void setTimePosted(String time) {
-        timePosted.setText(time);
+    public void setPublishedDate(String time) {
+        publishedDate.setText(time);
     }
 
-    public void setUsername(String username) {
-        tv_username.setText(username);
+    public void setSection(String username) {
+        tv_section.setText(username);
+    }
+    @Override
+    public void setPostImage(String src){
+        setImageHelper(src, iv_item, R.drawable.image_placeholder);
     }
 
-    public void setProfileImage(String src){
-        ImageLoaderHelper.loadWithPlaceholder(itemView.getContext(),src, iv_profile, R.drawable.image_placeholder);
-    }
-
-    public void setCaption(String caption) {
-        tv_caption.setText(caption);
-    }
 }

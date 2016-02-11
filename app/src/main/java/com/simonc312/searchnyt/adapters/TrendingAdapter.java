@@ -42,15 +42,15 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
     @Override
     public void onBindViewHolder(GridViewHolder holder, int position) {
         Article data = articleList.get(position);
-        holder.setPostImage(data.getImageSource());
 
         if(!isGridLayout){
             TrendingPostViewHolder trendingPostViewHolder = (TrendingPostViewHolder) holder;
-            trendingPostViewHolder.setProfileImage(data.getUrl());
-            trendingPostViewHolder.setUsername(data.getTitle());
-            trendingPostViewHolder.setLikes(data.getDisplayByline());
-            trendingPostViewHolder.setTimePosted(data.getRelativeTimePosted());
-            trendingPostViewHolder.setCaption(data.getSummary());
+            trendingPostViewHolder.setPostImage(data.getImageSource());
+            trendingPostViewHolder.setSection(data.getSection());
+            trendingPostViewHolder.setHeadline(data.getTitle());
+            trendingPostViewHolder.setPublishedDate(data.getPublishedDate());
+        } else {
+            holder.setPostImage(data.getImageSource());
         }
     }
 

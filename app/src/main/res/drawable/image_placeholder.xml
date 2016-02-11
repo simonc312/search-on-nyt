@@ -6,7 +6,7 @@
     </solid>
 
     <size
-        android:height="@dimen/thumbnail_size"
-        android:width="@dimen/thumbnail_size"/>
+        android:height="@dimen/medium_440_height"
+        android:width="@dimen/medium_440_width"/>
 
 </shape>

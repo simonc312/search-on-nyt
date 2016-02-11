@@ -8,5 +8,13 @@
     <dimen name="appbar_height">200dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="margin_4">4dp</dimen>
-    <dimen name="thumbnail_size">150px</dimen>
+    <dimen name="margin_8">8dp</dimen>
+
+    //image asset dimens
+    <dimen name="thumbnail_size">75px</dimen>
+    <dimen name="square_size">320px</dimen>
+    <dimen name="square_size_2x">640px</dimen>
+    <dimen name="medium_440_width">440px</dimen>
+    <dimen name="medium_210">210px</dimen>
+    <dimen name="medium_440_height">293px</dimen>
 </resources>
