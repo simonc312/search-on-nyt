@@ -33,7 +33,7 @@ public class Media {
     }
 
     public MediaMetaData getStandard() {
-        return getImageType("mediumThreeByTwo440");
+        return getImageType("square320");
     }
 
     /**

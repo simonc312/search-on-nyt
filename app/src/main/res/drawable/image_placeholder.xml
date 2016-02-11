@@ -6,7 +6,7 @@
     </solid>
 
     <size
-        android:height="@dimen/medium_440_height"
-        android:width="@dimen/medium_440_width"/>
+        android:height="@dimen/square_size"
+        android:width="@dimen/square_size"/>
 
 </shape>

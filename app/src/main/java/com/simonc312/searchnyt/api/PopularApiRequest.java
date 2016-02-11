@@ -10,7 +10,7 @@ import org.json.JSONObject;
 public class PopularApiRequest extends AbstractApiRequest {
     private String API_KEY = "33b85f6537208d440f0dcbfa24c3d55d:3:74301097";
     protected String TIME_PERIOD = "1";
-    protected String RESOURCE_TYPE = "mostshared";
+    protected String RESOURCE_TYPE = "mostviewed";
     protected String SECTION = "all-sections";
     protected int ITEM_COUNT = 20;
     public PopularApiRequest(Context context,RequestListener listener){
