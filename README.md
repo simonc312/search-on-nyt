@@ -10,48 +10,33 @@ Project Week 2 for Codepath Android Dev Bootcamp.
 
 - Fetch:
 
-    1) web_url
+    - [x] web_url
+    - [x] snippet
+    - [x] source
+    - [x] headline
+    - [x] keywords
+    - [x] pub_date
+    - [x] byline
+    - [x] page
+    - [x] lead_paragraph
+    - [x] multimedia - thumbnail, square, large image
+    - [x] day_of_week - facet_field
     
-    2) snippet
+- Components
     
-    3) source
-    
-    4) headline
-    
-    5) keywords
-    
-    6) pub_date
-    
-    7) byline
-    
-    8) page
-    
-    9) lead_paragraph
-    
-    10) multimedia - thumbnail, standard, large image
-    
-    11) day_of_week - facet_field
-    
-- Extra Features:
-
-    1) Searchview   
+    - [x] Most Popular Home page
+    - [ ] Individual Article View
+    - [ ] Search Fields Dialog
+    - [ ] Searchview   
 
 - Style:
 
-    [x] Circle crop profile picture  
+    - [x] Circle crop linear layout picture  
+    - [x] Format time posted to relative time 
+    - [x] Placeholder image while loading
+    - [x] Endless bottom scrolling 
+    - [ ] Staggered layout manager
+    - [ ] Prevent reloading if no wifi detected
+    - [ ] Display error image if failed to load 
     
-    [x] Format time posted to relative time 
-    ex. Just Now, 1d, 2w, 3m, 1y etc 
-    
-    [x] Placeholder image while loading
-    
-    [x] Endless bottom scrolling 
-    
-    [] Prevent reloading if no wifi detected
-    
-    [] Display error image if failed to load 
-    
-    [] Highlight url hashtags and usernames
-    
-    [] Search on click hashtag or username
     
