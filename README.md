@@ -1,8 +1,8 @@
-<span> ![mock logo][logo] </span> # Search on New York Times API
+#Search on New York Times API ![mock logo][logo]
 
 Project Week 2 for Codepath Android Dev Bootcamp. 
 
-[logo]: https://github.com/simonc312/search-on-nyt/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+[logo]: https://github.com/simonc312/search-on-nyt/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png
 
 ![walkthrough gif](https://github.com/simonc312/trending-on-instagram/blob/master/screenCapture/TrendingOnInstagramWalkthrough.gif)
 
