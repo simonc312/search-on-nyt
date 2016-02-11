@@ -20,23 +20,29 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.Title.TextAppearance" parent="TextAppearance.AppCompat.Title">
+    <style name="AppTheme.TextAppearance.Title" parent="TextAppearance.AppCompat.Title">
         <item name="android:textSize">24sp</item>
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="AppTheme.Search.TextAppearance.Bold" parent="TextAppearance.AppCompat.Subhead">
+    <style name="AppTheme.TextAppearance.Caption" parent="TextAppearance.AppCompat.Caption">
+
+    </style>
+
+    <style name="AppTheme.TextAppearance.Search.Bold" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AppTheme.Search.TextAppearance.Light" parent="TextAppearance.AppCompat.Subhead">
+    <style name="AppTheme.TextAppearance.Search.Light" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:textColor">@color/md_grey_400</item>
     </style>
 
-    <style name="CustomTabAppearance" parent="TextAppearance.AppCompat.Body2">
+    <style name="AppTheme.TextAppearance.CustomTab" parent="TextAppearance.AppCompat.Body2">
         <item name="android:textSize">@dimen/abc_text_size_button_material</item>
         <!--<item name="tabSelectedTextColor"></item>-->
         <item name="android:textStyle">normal</item>
     </style>
+
+
 
 </resources>

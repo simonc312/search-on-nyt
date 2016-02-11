@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/image"
         android:layout_marginTop="@dimen/margin_4"
-        android:textAppearance="@style/AppTheme.Search.TextAppearance.Bold" />
+        android:textAppearance="@style/AppTheme.TextAppearance.Search.Bold" />
 
     <TextView
         android:id="@+id/content"
@@ -29,5 +29,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/id"
         android:layout_alignLeft="@id/id"
-        android:textAppearance="@style/AppTheme.Search.TextAppearance.Light" />
+        android:textAppearance="@style/AppTheme.TextAppearance.Search.Light" />
 </RelativeLayout>

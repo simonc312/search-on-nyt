@@ -1,7 +1,5 @@
 package com.simonc312.searchnyt.models;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,6 +9,9 @@ import java.util.List;
  * Created by Simon on 2/6/2016.
  */
 public class Media {
+    public static final String JUMBO_FORMAT = "Jumbo";
+    public static final String SQUARE_FORMAT = "square320";
+    public static final String THUMBNAIL_FORMAT = "Standard Thumbnail";
     public String caption;
     public String type;
     public String copyright;
@@ -29,11 +30,23 @@ public class Media {
     }
 
     public MediaMetaData getThumbnail() {
-        return getImageType("Standard Thumbnail");
+        return getImageFormat(THUMBNAIL_FORMAT);
     }
 
-    public MediaMetaData getStandard() {
-        return getImageType("square320");
+    public MediaMetaData getSquare() {
+        return getImageFormat(SQUARE_FORMAT);
+    }
+
+    public MediaMetaData getJumbo(){ return getImageFormat(JUMBO_FORMAT);}
+
+    public String getAnyImageUrl(List<String> formats) {
+        Media.MediaMetaData metaData;
+        for(String format : formats){
+            metaData = getImageFormat(format);
+            if (metaData != null)
+                return metaData.url;
+        }
+        return "";
     }
 
     /**
@@ -41,27 +54,13 @@ public class Media {
      * @param type
      * @return
      */
-    private MediaMetaData getImageType(String type) {
+    private MediaMetaData getImageFormat(String type) {
         for (int i = 0; i <metaDataList.size(); i++) {
             MediaMetaData image = metaDataList.get(i);
-            Log.d("MediaMetaData format",image.format);
             if (image.format.contains(type))
                 return image;
         }
         return null;
-    }
-
-    public String getAnyImageUrl() {
-        String url = "";
-        Media.MediaMetaData metaData = getStandard();
-        if (metaData != null)
-            url = metaData.url;
-        else {
-            metaData = getThumbnail();
-            if (metaData != null)
-                url = metaData.url;
-        }
-        return url;
     }
 
     public static class MediaMetaData {

@@ -13,7 +13,7 @@
         app:tabIndicatorColor="?attr/colorAccent"
         app:tabIndicatorHeight="2dp"
         app:elevation="0dp"
-        app:tabTextAppearance="@style/CustomTabAppearance"/>
+        app:tabTextAppearance="@style/AppTheme.TextAppearance.CustomTab"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

@@ -4,31 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/selectableItemBackground"
-    android:paddingTop="@dimen/margin_8"
-    android:paddingBottom="@dimen/margin_8"
     android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@id/iv_item"
+    <ImageView
+        android:id="@+id/iv_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:contentDescription="Media Asset"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:src="@drawable/image_placeholder" />
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/image_placeholder_jumbo" />
+
+    <TextView
+        android:id="@+id/tv_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_item"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:textAppearance="@style/AppTheme.TextAppearance.Caption"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/iv_item"
+        android:layout_below="@id/tv_caption"
         android:padding="@dimen/default_margin">
 
         <TextView
             android:id="@+id/tv_section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
             android:textAppearance="@style/AppTheme.TextAppearance.Search.Bold" />
 
         <TextView

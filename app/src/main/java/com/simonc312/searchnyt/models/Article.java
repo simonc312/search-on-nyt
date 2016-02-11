@@ -3,6 +3,7 @@ package com.simonc312.searchnyt.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,15 +52,42 @@ public class Article {
         return publishedDate;
     }
 
+    public String getCaption() {
+        if(media != null && !media.isEmpty()){
+            Media m = media.get(0);
+            return m.caption;
+        } else
+            return "no caption";
+    }
+
     public String getImageSource() {
         String source = "empty";
         if(media != null){
+            List<String> formats = new ArrayList<>(2);
+            formats.add(Media.SQUARE_FORMAT);
+            formats.add(Media.THUMBNAIL_FORMAT);
             for(int i=0;i<media.size();i++){
                 Media m = media.get(i);
-                source = m.getAnyImageUrl();
+                source = m.getAnyImageUrl(formats);
             }
         }
             return source;
+    }
+
+    public String getJumboImageSource() {
+        String source = "empty";
+        if(media != null){
+            List<String> formats = new ArrayList<>(2);
+            formats.add(Media.JUMBO_FORMAT);
+            formats.add(Media.SQUARE_FORMAT);
+            formats.add(Media.THUMBNAIL_FORMAT);
+
+            for(int i=0;i<media.size();i++){
+                Media m = media.get(i);
+                source = m.getAnyImageUrl(formats);
+            }
+        }
+        return source;
     }
 
     public String getSummary() {
@@ -73,7 +101,7 @@ public class Article {
     public String getRelativeTimePosted(){
         //in seconds
         long timeDifference = (System.currentTimeMillis()/1000 - Long.valueOf(this.publishedDate));
-        String[] timeUnits = new String[]{"Just now","min","h","d","w","m","y"};
+        String[] timeUnits = new String[]{"Just now","m","h","d","w","m","y"};
         int[] incrementFactors = new int[]{60,60,24,7,4,12};
         int index = 0;
         while(index < incrementFactors.length && timeDifference > incrementFactors[index]){
@@ -115,4 +143,5 @@ public class Article {
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }
+
 }

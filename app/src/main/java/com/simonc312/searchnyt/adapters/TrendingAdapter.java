@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.R;
+import com.simonc312.searchnyt.models.Media;
+import com.simonc312.searchnyt.viewHolders.FirstTrendingPostViewHolder;
 import com.simonc312.searchnyt.viewHolders.GridViewHolder;
 import com.simonc312.searchnyt.viewHolders.TrendingPostViewHolder;
 
@@ -19,6 +21,8 @@ import java.util.List;
  * Created by Simon on 1/26/2016.
  */
 public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
+    private static final int FIRST_ITEM_VIEW_TYPE = 1;
+    private static final int NORMAL_ITEM_VIEW_TYPE = 0;
     private final PostItemListener mListener;
     private Context mContext;
     private boolean isGridLayout;
@@ -34,24 +38,43 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
 
     @Override
     public GridViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layoutID = isGridLayout ? R.layout.rv_grid_item : R.layout.rv_item;
-        View view = LayoutInflater.from(mContext).inflate(layoutID, parent, false);
-        return isGridLayout ? new GridViewHolder(view,mListener) : new TrendingPostViewHolder(view,mListener);
+        final int layoutID;
+        View view;
+        if(viewType == FIRST_ITEM_VIEW_TYPE && !isGridLayout){
+            layoutID = R.layout.rv_first_item;
+            view = LayoutInflater.from(mContext).inflate(layoutID, parent, false);
+            return new FirstTrendingPostViewHolder(view,mListener);
+        }
+        else{
+            layoutID = isGridLayout ? R.layout.rv_grid_item : R.layout.rv_item;
+            view = LayoutInflater.from(mContext).inflate(layoutID, parent, false);
+            return isGridLayout ? new GridViewHolder(view, mListener) : new TrendingPostViewHolder(view, mListener);
+        }
     }
 
     @Override
     public void onBindViewHolder(GridViewHolder holder, int position) {
         Article data = articleList.get(position);
-
         if(!isGridLayout){
             TrendingPostViewHolder trendingPostViewHolder = (TrendingPostViewHolder) holder;
-            trendingPostViewHolder.setPostImage(data.getImageSource());
             trendingPostViewHolder.setSection(data.getSection());
             trendingPostViewHolder.setHeadline(data.getTitle());
             trendingPostViewHolder.setPublishedDate(data.getPublishedDate());
+            if(holder.getItemViewType() == FIRST_ITEM_VIEW_TYPE) {
+                FirstTrendingPostViewHolder firstTrendingPostViewHolder = (FirstTrendingPostViewHolder) holder;
+                firstTrendingPostViewHolder.setCaption(data.getCaption());
+                firstTrendingPostViewHolder.setPostImage(data.getJumboImageSource());
+            } else{
+                trendingPostViewHolder.setPostImage(data.getImageSource());
+            }
         } else {
             holder.setPostImage(data.getImageSource());
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? FIRST_ITEM_VIEW_TYPE : NORMAL_ITEM_VIEW_TYPE;
     }
 
     @Override
@@ -96,10 +119,12 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
             comparisonList = articleList;
         else
             comparisonList = this.articleList.subList(0, newList.size());
-        for(Article article : newList){
-            if(!comparisonList.contains(article))
-                addPost(article,0);
+        for(int i=newList.size()-1;i>=0;i--){
+            Article article = newList.get(i);
+            if(comparisonList.contains(article))
+                newList.remove(i);
         }
+        addPosts(newList,false);
     }
 
     public interface PostItemListener {

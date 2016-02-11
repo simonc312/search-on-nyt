@@ -17,4 +17,6 @@
     <dimen name="medium_440_width">440px</dimen>
     <dimen name="medium_210">210px</dimen>
     <dimen name="medium_440_height">293px</dimen>
+    <dimen name="jumbo_size_width">1024px</dimen>
+    <dimen name="jumbo_size_height">715px</dimen>
 </resources>
