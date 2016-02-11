@@ -1,5 +1,6 @@
 package com.simonc312.searchnyt.activities;
 
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 
 import android.content.BroadcastReceiver;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupSupportActionBar();
+        setTitleFont();
         broadcastReciever = new LayoutChangeBroadcastReciever();
         swapFragment(TrendingFragment.newInstance(true, null,TrendingFragment.TRENDING_TYPE));
 
@@ -46,8 +49,15 @@ public class MainActivity extends AppCompatActivity
 
     private void setupSupportActionBar(){
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setShowHideAnimationEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    private void setTitleFont(){
+        TextView tx = (TextView)findViewById(R.id.app_name);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/EnglishTowne.ttf");
+        tx.setTypeface(custom_font);
     }
 
     @Override

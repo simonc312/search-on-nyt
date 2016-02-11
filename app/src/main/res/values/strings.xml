@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Search NY Times</string>
+    <string name="app_name">Search NYT</string>
+    <string name="app_name_title">Search The New York Times</string>
     <string name="search_id">cea9a22362595278fb0cb720a607197a:4:74301097</string>
     <string name="top_stories_id">3870faed54170b7df07426f339eb9f74:12:74301097</string>
     <string name="popular_id">33b85f6537208d440f0dcbfa24c3d55d:3:74301097</string>
