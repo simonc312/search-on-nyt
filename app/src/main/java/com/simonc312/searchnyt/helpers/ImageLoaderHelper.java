@@ -23,6 +23,8 @@ public class ImageLoaderHelper {
         Picasso.with(context)
                 .load(src)
                 .placeholder(placeHolderId)
+                .fit()
+                .centerCrop()
                 .into(image);
     }
 }
