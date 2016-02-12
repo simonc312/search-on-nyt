@@ -41,7 +41,7 @@ public class SearchResultActivity extends AppCompatActivity implements TrendingF
         handleSearchIntent(getIntent());
         setupSupportActionBar();
         broadcastReciever = new LayoutChangeBroadcastReciever();
-        swapFragment(TrendingFragment.newInstance(true,QUERY,SEARCH_TYPE));
+        swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT,QUERY,SEARCH_TYPE));
 
     }
 

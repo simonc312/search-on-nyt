@@ -59,7 +59,9 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
             TrendingPostViewHolder trendingPostViewHolder = (TrendingPostViewHolder) holder;
             trendingPostViewHolder.setSection(data.getSection());
             trendingPostViewHolder.setHeadline(data.getTitle());
-            trendingPostViewHolder.setPublishedDate(data.getPublishedDate());
+            trendingPostViewHolder.setPublishedDate(
+                    data.getRelativeTimePosted()
+            );
             if(holder.getItemViewType() == FIRST_ITEM_VIEW_TYPE) {
                 FirstTrendingPostViewHolder firstTrendingPostViewHolder = (FirstTrendingPostViewHolder) holder;
                 firstTrendingPostViewHolder.setCaption(data.getCaption());

@@ -32,9 +32,10 @@ Project Week 2 for Codepath Android Dev Bootcamp.
 - Style:
 
     - [x] Circle crop linear layout picture  
-    - [x] Format time posted to relative time 
+    - [x] Format pub_date  
     - [x] Placeholder image while loading
-    - [x] Endless bottom scrolling 
+    - [x] Endless bottom scrolling
+    - [x] Jumbo image view for first item 
     - [ ] Staggered layout manager
     - [ ] Prevent reloading if no wifi detected
     - [ ] Display error image if failed to load 

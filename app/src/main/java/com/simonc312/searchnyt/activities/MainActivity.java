@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity
         setupSupportActionBar();
         setTitle();
         broadcastReciever = new LayoutChangeBroadcastReciever();
-        swapFragment(TrendingFragment.newInstance(true, null,TrendingFragment.TRENDING_TYPE));
+        swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT, null,TrendingFragment.TRENDING_TYPE));
 
     }
 

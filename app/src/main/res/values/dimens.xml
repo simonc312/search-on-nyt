@@ -12,6 +12,7 @@
 
     //image asset dimens
     <dimen name="thumbnail_size">75px</dimen>
+    <dimen name="thumbnail_large_size">150px</dimen>
     <dimen name="square_size">320px</dimen>
     <dimen name="square_size_2x">640px</dimen>
     <dimen name="medium_440_width">440px</dimen>

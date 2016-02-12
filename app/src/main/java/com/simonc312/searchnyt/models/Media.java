@@ -11,7 +11,9 @@ import java.util.List;
 public class Media {
     public static final String JUMBO_FORMAT = "Jumbo";
     public static final String SQUARE_FORMAT = "square320";
-    public static final String THUMBNAIL_FORMAT = "Standard Thumbnail";
+    public static final String THUMBNAIL_FORMAT = "Large Thumbnail";
+    public static final String MEDIUM_FORMAT = "mediumThreeByTwo440";
+    public static final String MEDIUM_SMALL_FORMAT = "mediumThreeByTwo210";
     public String caption;
     public String type;
     public String copyright;

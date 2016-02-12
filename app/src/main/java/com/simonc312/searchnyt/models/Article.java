@@ -1,9 +1,18 @@
 package com.simonc312.searchnyt.models;
 
+import android.content.Context;
+import android.text.format.DateUtils;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.simonc312.searchnyt.helpers.DateHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -19,6 +28,7 @@ public class Article {
     private final String url;
 
     public List<Media> media;
+
 
     @JsonCreator
     public Article(
@@ -77,7 +87,7 @@ public class Article {
     public String getJumboImageSource() {
         String source = "empty";
         if(media != null){
-            List<String> formats = new ArrayList<>(2);
+            List<String> formats = new ArrayList<>(3);
             formats.add(Media.JUMBO_FORMAT);
             formats.add(Media.SQUARE_FORMAT);
             formats.add(Media.THUMBNAIL_FORMAT);
@@ -99,18 +109,7 @@ public class Article {
     }
 
     public String getRelativeTimePosted(){
-        //in seconds
-        long timeDifference = (System.currentTimeMillis()/1000 - Long.valueOf(this.publishedDate));
-        String[] timeUnits = new String[]{"Just now","m","h","d","w","m","y"};
-        int[] incrementFactors = new int[]{60,60,24,7,4,12};
-        int index = 0;
-        while(index < incrementFactors.length && timeDifference > incrementFactors[index]){
-            timeDifference /= incrementFactors[index];
-            index++;
-        }
-        int formattedTimeDifference = Math.round(timeDifference);
-
-        return (index == 0) ? timeUnits[index] : String.format("%d%s",formattedTimeDifference,timeUnits[index]);
+        return DateHelper.getInstance().getRelativeTime(this.publishedDate);
     }
 
     public String getDisplayByline(){

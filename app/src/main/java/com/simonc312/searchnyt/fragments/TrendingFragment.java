@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,9 @@ import butterknife.ButterKnife;
 public class TrendingFragment extends Fragment
         implements TrendingAdapter.PostItemListener,
         AbstractApiRequest.RequestListener{
+    public static final int GRID_LAYOUT = 0;
+    public static final int LINEAR_LAYOUT = 1;
+    public static final int STAGGERED_LAYOUT = 2;
     public static final int TRENDING_TYPE = -123;
     @BindInt(R.integer.grid_layout_span_count)
     int GRID_LAYOUT_SPAN_COUNT;
@@ -71,7 +75,6 @@ public class TrendingFragment extends Fragment
     private InteractionListener mListener;
     private BackPressedBroadcastListener backPressedListener;
     private TrendingAdapter adapter;
-    private boolean useGridLayout;
     private RecyclerView.ItemDecoration gridItemDecoration;
     private RecyclerView.ItemDecoration horizontalItemDecoration;
     private String query;
@@ -80,14 +83,15 @@ public class TrendingFragment extends Fragment
     private int queryType;
     //determines which page to request
     private int currentPage = 0;
+    private int requestedLayout;
 
     public TrendingFragment() {
         // Required empty public constructor
     }
 
-    public static TrendingFragment newInstance(boolean useGridLayout,String query, int queryType){
+    public static TrendingFragment newInstance(int layoutRequested,String query, int queryType){
         Bundle bundle = new Bundle();
-        bundle.putBoolean("useGridLayout", useGridLayout);
+        bundle.putInt("layoutRequested",layoutRequested);
         bundle.putString("query", query);
         bundle.putInt("queryType",queryType);
         TrendingFragment fragment = new TrendingFragment();
@@ -151,8 +155,8 @@ public class TrendingFragment extends Fragment
 
     @Override
     public void onPostClick(int position){
-        if(useGridLayout) {
-            useGridLayout = false;
+        if(useGridLayout()) {
+            setRequestedLayout(LINEAR_LAYOUT);
             mListener.onLayoutChange(true);
             adapter.setIsGridLayout(false);
             updateRV(recyclerView, getLinearLayout(), adapter);
@@ -177,11 +181,10 @@ public class TrendingFragment extends Fragment
      and scroll to current position
      */
     public void onBackPressed() {
-        if(!(useGridLayout)){
-            useGridLayout = true;
+        if(!useGridLayout()){
+            setRequestedLayout(STAGGERED_LAYOUT);
             mListener.onLayoutChange(false);
             adapter.setIsGridLayout(true);
-            getGridLayout();
             updateRV(recyclerView,getLayout(),adapter);
             recyclerView.scrollToPosition(recyclerView.getChildAdapterPosition(recyclerView.getFocusedChild()));
         } else {
@@ -191,7 +194,7 @@ public class TrendingFragment extends Fragment
 
     private void handleArguments(Bundle bundle) {
         if(!bundle.isEmpty()){
-            useGridLayout = bundle.getBoolean("useGridLayout",true);
+            requestedLayout = bundle.getInt("layoutRequested",STAGGERED_LAYOUT);
             query = bundle.getString("query");
             queryType = bundle.getInt("queryType",TRENDING_TYPE);
         }
@@ -231,7 +234,7 @@ public class TrendingFragment extends Fragment
 
     private void setupRV(RecyclerView recyclerView, Context context) {
         if(adapter == null){
-            adapter = new TrendingAdapter(context,useGridLayout,this);
+            adapter = new TrendingAdapter(context,useGridLayout(),this);
         }
 
         if(gridItemDecoration == null){
@@ -256,10 +259,19 @@ public class TrendingFragment extends Fragment
     }
 
     private RecyclerView.LayoutManager getLayout(){
-        if(useGridLayout)
-            return getGridLayout();
-        else
-           return getLinearLayout();
+        switch(requestedLayout){
+            case STAGGERED_LAYOUT:
+                return getStaggeredLayout();
+            case LINEAR_LAYOUT:
+                return getLinearLayout();
+            case GRID_LAYOUT:
+            default:
+                return getGridLayout();
+        }
+    }
+
+    private StaggeredGridLayoutManager getStaggeredLayout(){
+        return new StaggeredGridLayoutManager(GRID_LAYOUT_SPAN_COUNT,StaggeredGridLayoutManager.VERTICAL);
     }
 
     private GridLayoutManager getGridLayout(){
@@ -267,6 +279,10 @@ public class TrendingFragment extends Fragment
     }
     private LinearLayoutManager getLinearLayout(){
         return new LinearLayoutManager(getContext());
+    }
+
+    public void setRequestedLayout(int requestedLayout){
+        this.requestedLayout = requestedLayout;
     }
 
     private void updateRV(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, RecyclerView.Adapter adapter){
@@ -283,6 +299,10 @@ public class TrendingFragment extends Fragment
         if(oldDecoration != null && newDecoration != null)
         recyclerView.removeItemDecoration(oldDecoration);
         recyclerView.addItemDecoration(newDecoration);
+    }
+
+    private boolean useGridLayout(){
+        return requestedLayout == GRID_LAYOUT || requestedLayout == STAGGERED_LAYOUT;
     }
 
     private void fetchPopularAsync() {
