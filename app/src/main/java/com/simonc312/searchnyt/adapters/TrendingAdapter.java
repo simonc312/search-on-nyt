@@ -2,6 +2,7 @@ package com.simonc312.searchnyt.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.simonc312.searchnyt.viewHolders.GridViewHolder;
 import com.simonc312.searchnyt.viewHolders.TrendingPostViewHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -27,6 +30,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
     private Context mContext;
     private boolean isGridLayout;
     private List<Article> articleList;
+    private ArrayList<String> postFormatOrder;
+    private Iterator<String> formatOrderiterator;
 
 
     public TrendingAdapter(Context context, boolean isGridLayout,PostItemListener mListener){
@@ -34,6 +39,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
         this.mContext = context;
         this.isGridLayout = isGridLayout;
         this.mListener = mListener;
+        initializePostFormat();
     }
 
     @Override
@@ -70,7 +76,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
                 trendingPostViewHolder.setPostImage(data.getImageSource());
             }
         } else {
-            holder.setPostImage(data.getImageSource());
+            String format = getNextFormat();
+            holder.setPostImage(data.getImageSource(format));
         }
     }
 
@@ -127,6 +134,32 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
                 newList.remove(i);
         }
         addPosts(newList,false);
+    }
+
+    private void initializePostFormat(){
+        postFormatOrder = new ArrayList<>(12);
+        postFormatOrder.add(Media.JUMBO_FORMAT);
+        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
+        postFormatOrder.addAll(Arrays.asList(Media.MEDIUM_THEN_SQUARE));
+        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
+        postFormatOrder.addAll(Arrays.asList(Media.LARGE_SQUARE_THEN_TWO_SQUARES));
+        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
+        postFormatOrder.addAll(Arrays.asList(Media.SQUARE_THEN_MEDIUM));
+        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
+        postFormatOrder.addAll(Arrays.asList(Media.MEDIUM_THEN_SQUARE));
+        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
+        postFormatOrder.addAll(Arrays.asList(Media.LARGE_SQUARE_THEN_TWO_SQUARES));
+        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
+        postFormatOrder.addAll(Arrays.asList(Media.SQUARE_THEN_MEDIUM));
+        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
+    }
+
+    private String getNextFormat() {
+        // if not instantiated or used up restart iterator.
+        if(formatOrderiterator == null || !formatOrderiterator.hasNext()){
+            formatOrderiterator = postFormatOrder.iterator();
+        }
+        return formatOrderiterator.next();
     }
 
     public interface PostItemListener {

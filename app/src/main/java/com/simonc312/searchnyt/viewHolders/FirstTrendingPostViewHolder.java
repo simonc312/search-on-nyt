@@ -24,7 +24,7 @@ public class FirstTrendingPostViewHolder extends TrendingPostViewHolder {
 
     @Override
     public void setPostImage(String src){
-        setImageHelper(src, iv_item, R.drawable.image_placeholder_jumbo);
+        setImageHelperCenterCropFit(src, iv_item, R.drawable.image_placeholder_jumbo);
     }
 
     public void setCaption(String caption) {

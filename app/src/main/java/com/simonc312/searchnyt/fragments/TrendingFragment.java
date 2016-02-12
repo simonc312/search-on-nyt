@@ -271,7 +271,9 @@ public class TrendingFragment extends Fragment
     }
 
     private StaggeredGridLayoutManager getStaggeredLayout(){
-        return new StaggeredGridLayoutManager(GRID_LAYOUT_SPAN_COUNT,StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(GRID_LAYOUT_SPAN_COUNT,StaggeredGridLayoutManager.VERTICAL);
+        manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        return manager;
     }
 
     private GridLayoutManager getGridLayout(){
@@ -287,7 +289,7 @@ public class TrendingFragment extends Fragment
 
     private void updateRV(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, RecyclerView.Adapter adapter){
         //need to remove it otherwise
-        if(layoutManager instanceof GridLayoutManager)
+        if(useGridLayout())
             updateItemDecoration(gridItemDecoration,horizontalItemDecoration);
         else
             updateItemDecoration(horizontalItemDecoration, gridItemDecoration);

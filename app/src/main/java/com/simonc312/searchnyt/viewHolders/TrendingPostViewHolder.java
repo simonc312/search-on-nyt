@@ -41,7 +41,7 @@ public class TrendingPostViewHolder extends GridViewHolder {
     }
     @Override
     public void setPostImage(String src){
-        setImageHelper(src, iv_item, R.drawable.image_placeholder);
+        setImageHelperCenterCropFit(src, iv_item, R.drawable.image_placeholder);
     }
 
 }

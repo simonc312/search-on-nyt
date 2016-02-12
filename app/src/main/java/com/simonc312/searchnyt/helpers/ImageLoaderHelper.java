@@ -19,7 +19,21 @@ public class ImageLoaderHelper {
         loadWithPlaceholder(context,src,image,R.color.placeholder_color);
     }
 
+    public static  void loadWithPlaceholder(Context context, String src,ImageView image, int placeHolderId, boolean doCenterCropAndFit){
+        if(doCenterCropAndFit)
+            centerCropAndFit(context,src,image,placeHolderId);
+        else
+            loadWithPlaceholder(context,src,image,placeHolderId);
+    }
+
     public static  void loadWithPlaceholder(Context context, String src,ImageView image, int placeHolderId){
+        Picasso.with(context)
+                .load(src)
+                .placeholder(placeHolderId)
+                .into(image);
+    }
+
+    public static void centerCropAndFit(Context context, String src,ImageView image, int placeHolderId){
         Picasso.with(context)
                 .load(src)
                 .placeholder(placeHolderId)

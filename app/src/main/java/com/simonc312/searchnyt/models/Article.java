@@ -1,20 +1,13 @@
 package com.simonc312.searchnyt.models;
 
-import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.format.DateUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.simonc312.searchnyt.helpers.DateHelper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -30,7 +23,6 @@ public class Article {
     private final String url;
 
     public List<Media> media;
-
 
     @JsonCreator
     public Article(
@@ -72,34 +64,30 @@ public class Article {
             return "no caption";
     }
 
+    public String getImageSource(String format){
+        List<String> formats = new ArrayList<>(4);
+        formats.add(format);
+        formats.add(Media.SQUARE_FORMAT);
+        formats.add(Media.THUMBNAIL_FORMAT);
+        formats.add(Media.NORMAL_FORMAT);
+        return getAnyImageType(formats);
+    }
+
     public String getImageSource() {
-        String source = "empty";
-        if(media != null){
-            List<String> formats = new ArrayList<>(2);
-            formats.add(Media.SQUARE_FORMAT);
-            formats.add(Media.THUMBNAIL_FORMAT);
-            for(int i=0;i<media.size();i++){
-                Media m = media.get(i);
-                source = m.getAnyImageUrl(formats);
-            }
-        }
-            return source;
+        List<String> formats = new ArrayList<>(3);
+        formats.add(Media.SQUARE_FORMAT);
+        formats.add(Media.THUMBNAIL_FORMAT);
+        formats.add(Media.NORMAL_FORMAT);
+        return getAnyImageType(formats);
     }
 
     public String getJumboImageSource() {
-        String source = "empty";
-        if(media != null){
-            List<String> formats = new ArrayList<>(3);
-            formats.add(Media.JUMBO_FORMAT);
-            formats.add(Media.SQUARE_FORMAT);
-            formats.add(Media.THUMBNAIL_FORMAT);
-
-            for(int i=0;i<media.size();i++){
-                Media m = media.get(i);
-                source = m.getAnyImageUrl(formats);
-            }
-        }
-        return source;
+        List<String> formats = new ArrayList<>(4);
+        formats.add(Media.JUMBO_FORMAT);
+        formats.add(Media.SQUARE_FORMAT);
+        formats.add(Media.THUMBNAIL_FORMAT);
+        formats.add(Media.NORMAL_FORMAT);
+        return getAnyImageType(formats);
     }
 
     public String getSummary() {
@@ -145,6 +133,17 @@ public class Article {
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
+    }
+
+    private String getAnyImageType(List<String> formatOrderList){
+        String source = "empty";
+        if(media != null){
+            for(int i=0;i<media.size();i++){
+                Media m = media.get(i);
+                source = m.getAnyImageUrl(formatOrderList);
+            }
+        }
+        return source;
     }
 
 }
