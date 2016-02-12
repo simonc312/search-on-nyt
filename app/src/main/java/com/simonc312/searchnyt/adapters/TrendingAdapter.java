@@ -58,7 +58,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
         if(!isGridLayout){
             TrendingPostViewHolder trendingPostViewHolder = (TrendingPostViewHolder) holder;
             trendingPostViewHolder.setSection(data.getSection());
-            trendingPostViewHolder.setHeadline(data.getTitle());
+            trendingPostViewHolder.setHeadline(data.getDisplayTitle());
             trendingPostViewHolder.setPublishedDate(
                     data.getRelativeTimePosted()
             );

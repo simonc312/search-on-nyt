@@ -1,6 +1,8 @@
 package com.simonc312.searchnyt.models;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.format.DateUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -113,8 +115,10 @@ public class Article {
     }
 
     public String getDisplayByline(){
-        return String.format("%s",this.byline);
+        return String.format("%s", this.byline);
     }
+
+    public Spanned getDisplayTitle(){ return Html.fromHtml(title);}
 
     @Override
     public boolean equals(Object o) {

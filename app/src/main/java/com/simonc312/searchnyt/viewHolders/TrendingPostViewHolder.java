@@ -1,5 +1,6 @@
 package com.simonc312.searchnyt.viewHolders;
 
+import android.text.Spanned;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,7 +28,7 @@ public class TrendingPostViewHolder extends GridViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void setHeadline(String headline){
+    public void setHeadline(Spanned headline){
         tv_headline.setText(headline);
     }
 
