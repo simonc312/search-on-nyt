@@ -64,7 +64,7 @@ public class Article {
             return "no caption";
     }
 
-    public String getImageSource(String format){
+    public Media.MediaMetaData getMetaData(String format){
         List<String> formats = new ArrayList<>(4);
         formats.add(format);
         formats.add(Media.SQUARE_FORMAT);
@@ -73,7 +73,7 @@ public class Article {
         return getAnyImageType(formats);
     }
 
-    public String getImageSource() {
+    public Media.MediaMetaData getMetaData() {
         List<String> formats = new ArrayList<>(3);
         formats.add(Media.SQUARE_FORMAT);
         formats.add(Media.THUMBNAIL_FORMAT);
@@ -81,7 +81,7 @@ public class Article {
         return getAnyImageType(formats);
     }
 
-    public String getJumboImageSource() {
+    public Media.MediaMetaData getJumboMetaData() {
         List<String> formats = new ArrayList<>(4);
         formats.add(Media.JUMBO_FORMAT);
         formats.add(Media.SQUARE_FORMAT);
@@ -135,15 +135,14 @@ public class Article {
         return result;
     }
 
-    private String getAnyImageType(List<String> formatOrderList){
-        String source = "empty";
+    private Media.MediaMetaData getAnyImageType(List<String> formatOrderList){
+        Media.MediaMetaData source = null;
         if(media != null){
             for(int i=0;i<media.size();i++){
                 Media m = media.get(i);
-                source = m.getAnyImageUrl(formatOrderList);
+                source = m.getAnyImage(formatOrderList);
             }
         }
         return source;
     }
-
 }

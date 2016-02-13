@@ -30,8 +30,16 @@ public class GridViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         setImageHelper(src, iv_item,R.color.placeholder_color);
     }
 
+    public void setPostImage(String src, int width, int height) {
+        setImageHelper(src, iv_item, R.color.placeholder_color, width, height);
+    }
+
     protected void setImageHelper(String src,ImageView image, int placeholder){
-        ImageLoaderHelper.loadWithPlaceholder(image.getContext(), src, image, placeholder,false);
+        ImageLoaderHelper.loadWithPlaceholder(image.getContext(), src, image, placeholder, false);
+    }
+
+    protected void setImageHelper(String src,ImageView image, int placeholder, int width, int height){
+        ImageLoaderHelper.loadWithResizedPlaceHolder(image.getContext(), src, image, placeholder, width, height);
     }
 
     protected void setImageHelperCenterCropFit(String src,ImageView image, int placeholder){

@@ -2,7 +2,6 @@ package com.simonc312.searchnyt.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import com.simonc312.searchnyt.viewHolders.GridViewHolder;
 import com.simonc312.searchnyt.viewHolders.TrendingPostViewHolder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -30,8 +27,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
     private Context mContext;
     private boolean isGridLayout;
     private List<Article> articleList;
-    private ArrayList<String> postFormatOrder;
-    private Iterator<String> formatOrderiterator;
 
 
     public TrendingAdapter(Context context, boolean isGridLayout,PostItemListener mListener){
@@ -39,7 +34,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
         this.mContext = context;
         this.isGridLayout = isGridLayout;
         this.mListener = mListener;
-        initializePostFormat();
     }
 
     @Override
@@ -61,6 +55,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
     @Override
     public void onBindViewHolder(GridViewHolder holder, int position) {
         Article data = articleList.get(position);
+        Media.MediaMetaData metaData;
         if(!isGridLayout){
             TrendingPostViewHolder trendingPostViewHolder = (TrendingPostViewHolder) holder;
             trendingPostViewHolder.setSection(data.getSection());
@@ -71,13 +66,19 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
             if(holder.getItemViewType() == FIRST_ITEM_VIEW_TYPE) {
                 FirstTrendingPostViewHolder firstTrendingPostViewHolder = (FirstTrendingPostViewHolder) holder;
                 firstTrendingPostViewHolder.setCaption(data.getCaption());
-                firstTrendingPostViewHolder.setPostImage(data.getJumboImageSource());
+                metaData = data.getJumboMetaData();
+                if(metaData != null)
+                    firstTrendingPostViewHolder.setPostImage(metaData.url);
             } else{
-                trendingPostViewHolder.setPostImage(data.getImageSource());
+                metaData = data.getMetaData();
+                if(metaData != null)
+                    trendingPostViewHolder.setPostImage(metaData.url);
             }
         } else {
-            String format = getNextFormat();
-            holder.setPostImage(data.getImageSource(format));
+            String format = getNextFormat(position);
+            metaData = data.getMetaData(format);
+            if(metaData != null)
+                holder.setPostImage(metaData.url,metaData.width,metaData.height);
         }
     }
 
@@ -136,30 +137,13 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
         addPosts(newList,false);
     }
 
-    private void initializePostFormat(){
-        postFormatOrder = new ArrayList<>(12);
-        postFormatOrder.add(Media.JUMBO_FORMAT);
-        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
-        postFormatOrder.addAll(Arrays.asList(Media.MEDIUM_THEN_SQUARE));
-        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
-        postFormatOrder.addAll(Arrays.asList(Media.LARGE_SQUARE_THEN_TWO_SQUARES));
-        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
-        postFormatOrder.addAll(Arrays.asList(Media.SQUARE_THEN_MEDIUM));
-        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
-        postFormatOrder.addAll(Arrays.asList(Media.MEDIUM_THEN_SQUARE));
-        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
-        postFormatOrder.addAll(Arrays.asList(Media.LARGE_SQUARE_THEN_TWO_SQUARES));
-        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
-        postFormatOrder.addAll(Arrays.asList(Media.SQUARE_THEN_MEDIUM));
-        postFormatOrder.addAll(Arrays.asList(Media.THREE_SQUARES));
-    }
-
-    private String getNextFormat() {
-        // if not instantiated or used up restart iterator.
-        if(formatOrderiterator == null || !formatOrderiterator.hasNext()){
-            formatOrderiterator = postFormatOrder.iterator();
-        }
-        return formatOrderiterator.next();
+    private String getNextFormat(int position) {
+        String format = Media.SQUARE_FORMAT;
+        if(position % 3 == 0)
+            format = Media.MEDIUM_FORMAT;
+        else if(position % 7 == 0)
+            format = Media.NORMAL_FORMAT;
+        return format;
     }
 
     public interface PostItemListener {

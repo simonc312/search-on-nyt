@@ -20,4 +20,5 @@
     <dimen name="medium_440_height">293px</dimen>
     <dimen name="jumbo_size_width">1024px</dimen>
     <dimen name="jumbo_size_height">715px</dimen>
+    <dimen name="grid_item_padding">4dp</dimen>
 </resources>

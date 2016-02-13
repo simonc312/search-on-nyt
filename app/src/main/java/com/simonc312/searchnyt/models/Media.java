@@ -49,15 +49,15 @@ public class Media {
 
     public MediaMetaData getJumbo(){ return getImageFormat(JUMBO_FORMAT);}
 
-    public String getAnyImageUrl(List<String> formats) {
+    public MediaMetaData getAnyImage(List<String> formats) {
         Media.MediaMetaData metaData;
         for(String format : formats){
             metaData = getImageFormat(format);
             if (metaData != null)
-                return metaData.url;
+                return metaData;
         }
-        Log.d("no format matched", metaDataList.toString());
-        return "empty";
+        Log.d("no metadata matched", metaDataList.toString());
+        return null;
     }
 
     /**
@@ -65,7 +65,7 @@ public class Media {
      * @param type
      * @return
      */
-    private MediaMetaData getImageFormat(String type) {
+    public MediaMetaData getImageFormat(String type) {
         for (int i = 0; i <metaDataList.size(); i++) {
             MediaMetaData image = metaDataList.get(i);
             if (image.format.contains(type))

@@ -15,15 +15,23 @@ public class ImageLoaderHelper {
     private ImageLoaderHelper(){
     }
 
-    public static void load(Context context, String src,ImageView image){
-        loadWithPlaceholder(context,src,image,R.color.placeholder_color);
-    }
-
-    public static  void loadWithPlaceholder(Context context, String src,ImageView image, int placeHolderId, boolean doCenterCropAndFit){
+    public static  void loadWithPlaceholder(Context context,
+                                            String src,
+                                            ImageView image,
+                                            int placeHolderId,
+                                            boolean doCenterCropAndFit){
         if(doCenterCropAndFit)
             centerCropAndFit(context,src,image,placeHolderId);
         else
             loadWithPlaceholder(context,src,image,placeHolderId);
+    }
+
+    public static void loadWithResizedPlaceHolder(Context context, String src, ImageView image, int placeHolderId, int width, int height){
+        Picasso.with(context)
+                .load(src)
+                .resize(width,height)
+                .placeholder(placeHolderId)
+                .into(image);
     }
 
     public static  void loadWithPlaceholder(Context context, String src,ImageView image, int placeHolderId){

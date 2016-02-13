@@ -289,18 +289,20 @@ public class TrendingFragment extends Fragment
 
     private void updateRV(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, RecyclerView.Adapter adapter){
         //need to remove it otherwise
-        if(useGridLayout())
+        if(layoutManager instanceof GridLayoutManager)
             updateItemDecoration(gridItemDecoration,horizontalItemDecoration);
-        else
+        else if(layoutManager instanceof LinearLayoutManager)
             updateItemDecoration(horizontalItemDecoration, gridItemDecoration);
+        else if(layoutManager instanceof StaggeredGridLayoutManager)
+            recyclerView.removeItemDecoration(horizontalItemDecoration);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
 
     private void updateItemDecoration(RecyclerView.ItemDecoration newDecoration, RecyclerView.ItemDecoration oldDecoration){
         if(oldDecoration != null && newDecoration != null)
-        recyclerView.removeItemDecoration(oldDecoration);
-        recyclerView.addItemDecoration(newDecoration);
+            recyclerView.removeItemDecoration(oldDecoration);
+            recyclerView.addItemDecoration(newDecoration);
     }
 
     private boolean useGridLayout(){
