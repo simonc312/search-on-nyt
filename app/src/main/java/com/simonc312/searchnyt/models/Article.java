@@ -3,8 +3,6 @@ package com.simonc312.searchnyt.models;
 import android.text.Html;
 import android.text.Spanned;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.simonc312.searchnyt.helpers.DateHelper;
 
 import java.util.ArrayList;
@@ -24,15 +22,14 @@ public class Article {
 
     public List<Media> media;
 
-    @JsonCreator
     public Article(
-            @JsonProperty(value = "section") String section,
-            @JsonProperty(value = "title") String title,
-            @JsonProperty(value = "url") String url,
-            @JsonProperty(value = "byline") String byline,
-            @JsonProperty(value = "published_date") String publishedDate,
-            @JsonProperty(value = "abstract") String summary,
-            @JsonProperty(value = "media") List<Media> media){
+            String section,
+            String title,
+            String url,
+            String byline,
+            String publishedDate,
+            String summary,
+            List<Media> media){
         this.section = section;
         this.title = title;
         this.url = url;

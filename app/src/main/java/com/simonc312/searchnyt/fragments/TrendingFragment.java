@@ -34,6 +34,7 @@ import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.helpers.EndlessRVScrollListener;
 import com.simonc312.searchnyt.helpers.GridItemDecoration;
+import com.simonc312.searchnyt.models.PopularArticle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -333,16 +334,12 @@ public class TrendingFragment extends Fragment
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
                     .reader()
                     .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-                    .forType(new TypeReference<List<Article>>() {});
+                    .forType(new TypeReference<List<PopularArticle>>() {});
             List<Article> articleList = reader.readValue(dataArray.toString());
             adapter.update(articleList, addToEnd);
 
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }

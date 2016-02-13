@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.List;
 
@@ -90,6 +91,16 @@ public class Media {
             this.height = height;
             this.width = width;
         }
+
+        /*@JsonProperty("format")
+        public void setFormat(String format){
+            this.format = format;
+        }
+
+        @JsonProperty("subtype")
+        public void setSubtype(String format){
+            this.format = format;
+        }*/
 
         @Override
         public String toString(){
