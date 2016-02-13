@@ -36,7 +36,7 @@ Project Week 2 for Codepath Android Dev Bootcamp.
     - [x] Placeholder image while loading
     - [x] Endless bottom scrolling
     - [x] Jumbo image view for first item 
-    - [ ] Staggered layout manager
+    - [x] Staggered layout manager
     - [ ] Prevent reloading if no wifi detected
     - [ ] Display error image if failed to load 
     

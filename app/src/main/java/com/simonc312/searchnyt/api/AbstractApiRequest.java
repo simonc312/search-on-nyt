@@ -29,8 +29,7 @@ public abstract class AbstractApiRequest implements ApiRequestInterface {
 
     abstract String getApiKey();
 
-    @Override
-    public String getUrl() {return "OVERRIDE URL";}
+    abstract public String getUrl();
 
     @Override
     public RequestParams getParams() {

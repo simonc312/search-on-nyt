@@ -9,11 +9,9 @@ import org.json.JSONObject;
  */
 public class TopStoriesSearchApiRequest extends AbstractApiRequest {
     private static String API_KEY = "3870faed54170b7df07426f339eb9f74:12:74301097";
-    private String query;
     private String section;
     public TopStoriesSearchApiRequest(Context context, RequestListener listener){
         super(context, listener);
-        query = "elections";
     }
 
     @Override
