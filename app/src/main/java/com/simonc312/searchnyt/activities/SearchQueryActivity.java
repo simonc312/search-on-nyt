@@ -2,10 +2,9 @@ package com.simonc312.searchnyt.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -16,28 +15,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.simonc312.searchnyt.fragments.SearchFragment;
-import static com.simonc312.searchnyt.fragments.SearchFragment.TAG_TYPE;
-import static com.simonc312.searchnyt.fragments.SearchFragment.PEOPLE_TYPE;
 
-import com.simonc312.searchnyt.models.SearchTag;
+import static com.simonc312.searchnyt.fragments.SearchFragment.SEARCH_TYPE;
+
+import com.simonc312.searchnyt.helpers.DateHelper;
+import com.simonc312.searchnyt.models.SearchQuery;
 import com.simonc312.searchnyt.R;
-import com.simonc312.searchnyt.models.UserTag;
 import com.simonc312.searchnyt.viewPagers.ViewPagerAdapter;
 
+import java.util.Date;
+
 import butterknife.Bind;
-import butterknife.BindString;
+import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 
 
 public class SearchQueryActivity extends AppCompatActivity
         implements SearchFragment.InteractionListener {
-    @BindString(R.string.action_query_changed) String ACTION_QUERY_CHANGED;
+    @BindDrawable(R.drawable.ic_favorite_red_500_18dp)
+    Drawable FILTER_DRAWABLE;
     @Bind(R.id.tabs)
     TabLayout tabLayout;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.viewpager)
     ViewPager viewPager;
+    private SearchQuery searchQuery;
     private SearchView searchView;
     private ViewPagerAdapter pagerAdapter;
 
@@ -48,12 +51,18 @@ public class SearchQueryActivity extends AppCompatActivity
         ButterKnife.bind(this);
         setupSupportActionBar();
         setupViewPager();
+        setupSearchQuery();
+    }
+
+    private void setupSearchQuery() {
+        String defaultBeginDate = getString(R.string.earliestSearchBeginDate);
+        String defaultEndDate = DateHelper.getInstance().getFilterFormatDate(new Date());
+        searchQuery = new SearchQuery("",defaultBeginDate,defaultEndDate);
     }
 
     private void setupViewPager() {
         pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addFragment(SearchFragment.newInstance(PEOPLE_TYPE),"People");
-        pagerAdapter.addFragment(SearchFragment.newInstance(TAG_TYPE), "Tags");
+        pagerAdapter.addFragment(SearchFragment.newInstance(SEARCH_TYPE), "Filters", FILTER_DRAWABLE);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -108,17 +117,15 @@ public class SearchQueryActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if(query.length() > 1){
+                    searchQuery.setQuery(query);
+                    onListFragmentInteraction(searchQuery);
+                }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //min query length to update
-                if (newText.length() >= 2) {
-                    Intent intent = new Intent(ACTION_QUERY_CHANGED);
-                    intent.putExtra("query", newText);
-                    LocalBroadcastManager.getInstance(SearchQueryActivity.this).sendBroadcast(intent);
-                }
                 return false;
             }
         });
@@ -127,16 +134,14 @@ public class SearchQueryActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(SearchTag searchTag) {
+    public void onListFragmentInteraction(SearchQuery searchQuery) {
         if(searchView != null){
-            //searchView.setQuery(searchTag.getSearchName(),true);
-            int queryType = searchTag instanceof UserTag ? SearchFragment.PEOPLE_TYPE : SearchFragment.TAG_TYPE;
+            int queryType = SearchFragment.SEARCH_TYPE;
             Bundle bundle = new Bundle();
-            bundle.putString("title", searchTag.getDisplayName());
+            bundle.putString("title", searchQuery.getQuery());
             bundle.putInt("queryType", queryType);
-            triggerSearch(searchTag.getSearchName(), bundle);
-            //startSearch(searchTag.getSearchName(),true,bundle,false);
-
+            bundle.putParcelable("query",searchQuery);
+            triggerSearch(searchQuery.getQuery(), bundle);
         }
     }
 }

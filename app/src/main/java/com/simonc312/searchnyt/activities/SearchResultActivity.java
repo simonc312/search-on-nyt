@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.simonc312.searchnyt.fragments.TrendingFragment;
 import com.simonc312.searchnyt.R;
+import com.simonc312.searchnyt.models.Query;
 
 import butterknife.Bind;
 import butterknife.BindString;
@@ -31,7 +32,7 @@ public class SearchResultActivity extends AppCompatActivity implements TrendingF
     private String TITLE;
     private int SEARCH_TYPE;
     private LayoutChangeBroadcastReciever broadcastReciever;
-    private String QUERY;
+    private Query QUERY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +63,10 @@ public class SearchResultActivity extends AppCompatActivity implements TrendingF
 
     private void handleSearchIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
             Bundle bundle = intent.getBundleExtra(SearchManager.APP_DATA);
-            String title = bundle.getString("title");
-            int queryType = bundle.getInt("queryType");
-            QUERY = query;
-            SEARCH_TYPE = queryType;
-            TITLE = title;
+            QUERY = bundle.getParcelable("query");
+            SEARCH_TYPE = bundle.getInt("queryType");
+            TITLE = bundle.getString("title");
         }
     }
 

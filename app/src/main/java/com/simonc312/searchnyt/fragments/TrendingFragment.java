@@ -35,7 +35,6 @@ import com.simonc312.searchnyt.mixins.PopularArticleMixin;
 import com.simonc312.searchnyt.mixins.PopularMediaMixin;
 import com.simonc312.searchnyt.mixins.PopularMetaDataMixin;
 import com.simonc312.searchnyt.mixins.SearchArticleDeserializer;
-import com.simonc312.searchnyt.mixins.SearchMediaMixin;
 import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.helpers.EndlessRVScrollListener;
@@ -43,7 +42,9 @@ import com.simonc312.searchnyt.helpers.GridItemDecoration;
 import com.simonc312.searchnyt.models.MediaMetaData;
 import com.simonc312.searchnyt.models.PopularArticle;
 import com.simonc312.searchnyt.models.PopularMedia;
+import com.simonc312.searchnyt.models.Query;
 import com.simonc312.searchnyt.models.SearchArticle;
+import com.simonc312.searchnyt.models.SearchQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,7 +88,7 @@ public class TrendingFragment extends Fragment
     private TrendingAdapter adapter;
     private RecyclerView.ItemDecoration gridItemDecoration;
     private RecyclerView.ItemDecoration horizontalItemDecoration;
-    private String query;
+    private Query query;
     //determines where to add new posts
     private boolean addToEnd = false;
     private int queryType;
@@ -99,10 +100,10 @@ public class TrendingFragment extends Fragment
         // Required empty public constructor
     }
 
-    public static TrendingFragment newInstance(int layoutRequested,String query, int queryType){
+    public static TrendingFragment newInstance(int layoutRequested,Query query, int queryType){
         Bundle bundle = new Bundle();
         bundle.putInt("layoutRequested",layoutRequested);
-        bundle.putString("query", query);
+        bundle.putParcelable("query", query);
         bundle.putInt("queryType",queryType);
         TrendingFragment fragment = new TrendingFragment();
         fragment.setArguments(bundle);
@@ -209,7 +210,7 @@ public class TrendingFragment extends Fragment
     private void handleArguments(Bundle bundle) {
         if(!bundle.isEmpty()){
             requestedLayout = bundle.getInt("layoutRequested",STAGGERED_LAYOUT);
-            query = bundle.getString("query");
+            query = bundle.getParcelable("query");
             queryType = bundle.getInt("queryType",TRENDING_TYPE);
         }
     }
@@ -328,10 +329,12 @@ public class TrendingFragment extends Fragment
         sendRequest(request);
     }
 
-    private void fetchSearchAsync(String tag){
+    private void fetchSearchAsync(Query query){
         SearchApiRequest request = new SearchApiRequest(getContext(),this);
-        request.setQuery("pope");
-        request.setBeginDate("20150210");
+        SearchQuery searchQuery = (SearchQuery) query;
+        request.setQuery(searchQuery.getQuery());
+        request.setBeginDate(searchQuery.getBeginDate());
+        //request.setEndDate(searchQuery.getEndDate());
         request.setOffset(adapter.getItemCount());
         sendRequest(request);
     }

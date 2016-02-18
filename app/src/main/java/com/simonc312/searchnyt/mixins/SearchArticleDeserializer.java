@@ -1,8 +1,6 @@
 package com.simonc312.searchnyt.mixins;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -26,7 +24,8 @@ public class SearchArticleDeserializer extends JsonDeserializer<SearchArticle>{
         String section = node.get("section_name").asText();
         String headline = node.get("headline").get("main").asText();
         String url = node.get("web_url").asText();
-        String byline = node.get("byline").get("original").asText();
+        JsonNode bylineNode = node.get("byline").get("original");
+        String byline = bylineNode != null ? bylineNode.asText() : "";
         String pubDate = node.get("pub_date").asText();
         String summary = node.get("snippet").asText();
         String wordCount = node.get("word_count").asText();

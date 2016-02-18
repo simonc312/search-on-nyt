@@ -14,6 +14,7 @@ public class DateHelper {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
     private static SimpleDateFormat displayDateFormat = new SimpleDateFormat("MMM d");
     private static SimpleDateFormat displayOldDateFormat = new SimpleDateFormat("MMM d, yyyy");
+    private static SimpleDateFormat filterDateFormat = new SimpleDateFormat("yyyymmdd");
     private final Calendar calendar;
     private final Calendar calendar2;
 
@@ -41,6 +42,16 @@ public class DateHelper {
         return null;
     }
 
+    public String getFilterFormatDate(Date date) {
+        return filterDateFormat.format(date);
+    }
 
-
+    public Date getFilterParsedDate(String date) {
+        try {
+            return filterDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

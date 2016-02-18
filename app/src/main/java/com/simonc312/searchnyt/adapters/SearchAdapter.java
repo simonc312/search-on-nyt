@@ -9,42 +9,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.simonc312.searchnyt.fragments.SearchFragment.InteractionListener;
-import com.simonc312.searchnyt.helpers.ImageLoaderHelper;
-import com.simonc312.searchnyt.models.SearchTag;
-import com.simonc312.searchnyt.models.UserTag;
+import com.simonc312.searchnyt.models.SearchQuery;
 import com.simonc312.searchnyt.R;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link SearchTag} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link SearchQuery} and makes a call to the
  * specified {@link InteractionListener}.
  */
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
-
-    private static final int USER_TYPE = 1;
     private static final int TAG_TYPE = 0;
-    private List<SearchTag> mValues;
+    private List<SearchQuery> mValues;
     private final InteractionListener mListener;
 
-    public SearchAdapter(List<SearchTag> items,InteractionListener listener) {
+    public SearchAdapter(List<SearchQuery> items,InteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
 
     @Override
     public int getItemViewType(int position) {
-        int type;
-        if(mValues.get(position) instanceof UserTag)
-            type = USER_TYPE;
-        else
-            type = TAG_TYPE;
-        return type;
+        return TAG_TYPE;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layoutResourceId = (viewType == USER_TYPE) ? R.layout.fragment_search_user_item : R.layout.fragment_search_item;
+        int layoutResourceId = R.layout.fragment_search_item;
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(layoutResourceId, parent, false);
         return new ViewHolder(view);
@@ -52,21 +43,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        SearchTag tag = mValues.get(position);
+        SearchQuery tag = mValues.get(position);
         holder.mItem = tag;
         String name;
-        if(tag instanceof UserTag) {
-            UserTag userTag = (UserTag) tag;
-            ImageLoaderHelper.loadWithPlaceholder(
-                    holder.imageView.getContext(),
-                    userTag.getProfilePicture(),
-                    holder.imageView,
-                    R.drawable.image_placeholder);
-            name = userTag.getDisplayName();
-        } else{
-            name = tag.getDisplayName();
-            holder.mContentView.setText(tag.getDisplayTotalPosts());
-        }
+        name = tag.getQuery();
         holder.mIdView.setText(name);
     }
 
@@ -75,12 +55,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return mValues.size();
     }
 
-    public void addItem(SearchTag tag) {
+    public void addItem(SearchQuery tag) {
         mValues.add(0,tag);
         notifyItemInserted(0);
     }
 
-    public void update(List<SearchTag> newList) {
+    public void update(List<SearchQuery> newList) {
         mValues = newList;
         notifyDataSetChanged();
     }
@@ -91,7 +71,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         @Nullable
         public final TextView mContentView;
         public final ImageView imageView;
-        public SearchTag mItem;
+        public SearchQuery mItem;
 
         public ViewHolder(View view) {
             super(view);
