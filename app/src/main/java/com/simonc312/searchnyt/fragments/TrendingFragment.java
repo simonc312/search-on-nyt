@@ -30,10 +30,13 @@ import com.simonc312.searchnyt.api.ApiRequestInterface;
 import com.simonc312.searchnyt.api.ApiHandler;
 import com.simonc312.searchnyt.api.PopularApiRequest;
 import com.simonc312.searchnyt.helpers.HorizontalDividerItemDecoration;
+import com.simonc312.searchnyt.mixins.PopularArticleMixin;
+import com.simonc312.searchnyt.mixins.PopularMediaMixin;
 import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.helpers.EndlessRVScrollListener;
 import com.simonc312.searchnyt.helpers.GridItemDecoration;
+import com.simonc312.searchnyt.models.Media;
 import com.simonc312.searchnyt.models.PopularArticle;
 
 import org.json.JSONArray;
@@ -42,6 +45,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.BindInt;
@@ -332,6 +336,8 @@ public class TrendingFragment extends Fragment
             ObjectReader reader = new ObjectMapper()
                     .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
+                    .addMixIn(PopularArticle.class, PopularArticleMixin.class)
+                    .addMixIn(Media.MediaMetaData.class, PopularMediaMixin.class)
                     .reader()
                     .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                     .forType(new TypeReference<List<PopularArticle>>() {});

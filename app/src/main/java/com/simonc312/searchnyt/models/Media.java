@@ -80,27 +80,16 @@ public class Media {
         public String format;
         public int height;
         public int width;
-        @JsonCreator
         public MediaMetaData(
-                @JsonProperty(value = "url") String url,
-                @JsonProperty(value = "format") String format,
-                @JsonProperty(value = "height") int height,
-                @JsonProperty(value = "width") int width) {
+                String url,
+                String format,
+                int height,
+                int width) {
             this.url = url;
             this.format = format;
             this.height = height;
             this.width = width;
         }
-
-        /*@JsonProperty("format")
-        public void setFormat(String format){
-            this.format = format;
-        }
-
-        @JsonProperty("subtype")
-        public void setSubtype(String format){
-            this.format = format;
-        }*/
 
         @Override
         public String toString(){

@@ -1,8 +1,5 @@
 package com.simonc312.searchnyt.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -12,16 +9,15 @@ public class SearchArticle extends Article{
 
     private String wordCount;
 
-    @JsonCreator
     public SearchArticle(
-            @JsonProperty(value = "section") String section,
-            @JsonProperty(value = "title") String title,
-            @JsonProperty(value = "web_url") String url,
-            @JsonProperty(value = "byline") String byline,
-            @JsonProperty(value = "pub_date") String publishedDate,
-            @JsonProperty(value = "abstract") String summary,
-            @JsonProperty(value = "multimedia") List<Media> media, //TODO change Media to SearchMedia to map format to subtype
-            @JsonProperty(value = "word_count") String wordCount){
+            String section,
+            String title,
+            String url,
+            String byline,
+            String publishedDate,
+            String summary,
+            List<Media> media,
+            String wordCount){
         super(
                 section,
                 title,
@@ -33,5 +29,14 @@ public class SearchArticle extends Article{
         );
 
         this.wordCount = wordCount;
+    }
+
+    public String getWordCount(){
+        return wordCount;
+    }
+
+    @Override
+    public String getRelativeTimePosted() {
+        return "today";
     }
 }

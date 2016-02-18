@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * Created by Simon on 1/27/2016.
  */
-public class Article {
+public abstract class Article {
 
     private final String section;
     private final String title;
     private final String byline;
-    private final String publishedDate;
+    protected final String publishedDate;
     private final String summary;
     private final String url;
 
@@ -95,15 +95,13 @@ public class Article {
         return url;
     }
 
-    public String getRelativeTimePosted(){
-        return DateHelper.getInstance().getRelativeTime(this.publishedDate);
-    }
-
     public String getDisplayByline(){
         return String.format("%s", this.byline);
     }
 
     public Spanned getDisplayTitle(){ return Html.fromHtml(title);}
+
+    public abstract String getRelativeTimePosted();
 
     @Override
     public boolean equals(Object o) {
