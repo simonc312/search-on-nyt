@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 
 import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.R;
-import com.simonc312.searchnyt.models.Media;
+import com.simonc312.searchnyt.models.MediaMetaData;
+import com.simonc312.searchnyt.models.PopularMedia;
 import com.simonc312.searchnyt.viewHolders.FirstTrendingPostViewHolder;
 import com.simonc312.searchnyt.viewHolders.GridViewHolder;
 import com.simonc312.searchnyt.viewHolders.TrendingPostViewHolder;
@@ -55,7 +56,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
     @Override
     public void onBindViewHolder(GridViewHolder holder, int position) {
         Article data = articleList.get(position);
-        Media.MediaMetaData metaData;
+        MediaMetaData metaData;
         if(!isGridLayout){
             TrendingPostViewHolder trendingPostViewHolder = (TrendingPostViewHolder) holder;
             trendingPostViewHolder.setSection(data.getSection());
@@ -68,17 +69,17 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
                 firstTrendingPostViewHolder.setCaption(data.getCaption());
                 metaData = data.getJumboMetaData();
                 if(metaData != null)
-                    firstTrendingPostViewHolder.setPostImage(metaData.url);
+                    firstTrendingPostViewHolder.setPostImage(metaData.getUrl());
             } else{
                 metaData = data.getMetaData();
                 if(metaData != null)
-                    trendingPostViewHolder.setPostImage(metaData.url);
+                    trendingPostViewHolder.setPostImage(metaData.getUrl());
             }
         } else {
             String format = getNextFormat(position);
             metaData = data.getMetaData(format);
             if(metaData != null)
-                holder.setPostImage(metaData.url,metaData.width,metaData.height);
+                holder.setPostImage(metaData.getUrl(),metaData.width,metaData.height);
         }
     }
 
@@ -137,13 +138,20 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
         addPosts(newList,false);
     }
 
+    //TODO refactor this method to call abstract methods for Article format sizes.
     private String getNextFormat(int position) {
-        String format = Media.SQUARE_FORMAT;
+        String format = MediaMetaData.NORMAL_FORMAT;
         if(position % 3 == 0)
-            format = Media.MEDIUM_FORMAT;
+            format = MediaMetaData.JUMBO_FORMAT;
         else if(position % 7 == 0)
-            format = Media.NORMAL_FORMAT;
+            format = MediaMetaData.JUMBO_FORMAT;
         return format;
+        /*String format = PopularMedia.SQUARE_FORMAT;
+        if(position % 3 == 0)
+            format = PopularMedia.MEDIUM_FORMAT;
+        else if(position % 7 == 0)
+            format = PopularMedia.NORMAL_FORMAT;
+        return format;*/
     }
 
     public interface PostItemListener {

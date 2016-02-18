@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.simonc312.searchnyt.fragments.TrendingFragment;
 import com.simonc312.searchnyt.R;
 
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity
         setupSupportActionBar();
         setTitle();
         broadcastReciever = new LayoutChangeBroadcastReciever();
-        swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT, null,TrendingFragment.TRENDING_TYPE));
+        swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT, null, TrendingFragment.TRENDING_TYPE));
 
     }
 
@@ -106,14 +105,6 @@ public class MainActivity extends AppCompatActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void swapFragment(Fragment fragment){
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
     @Override
     public void onLayoutChange(boolean show) {
         getSupportActionBar().setDisplayHomeAsUpEnabled(show);
@@ -124,6 +115,14 @@ public class MainActivity extends AppCompatActivity
         if(pop){
             finish();
         }
+    }
+
+    private void swapFragment(Fragment fragment){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private class LayoutChangeBroadcastReciever extends BroadcastReceiver{

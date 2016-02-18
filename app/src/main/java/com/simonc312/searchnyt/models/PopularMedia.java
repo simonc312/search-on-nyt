@@ -4,14 +4,13 @@ import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.List;
 
 /**
  * Created by Simon on 2/6/2016.
  */
-public class Media {
+public class PopularMedia{
     public static final String JUMBO_FORMAT = "Jumbo";
     public static final String SQUARE_FORMAT = "square320";
     public static final String SQUARE_LARGE_FORMAT = "square640";
@@ -28,12 +27,11 @@ public class Media {
     public String copyright;
     public List<MediaMetaData> metaDataList;
 
-    @JsonCreator
-    public Media(
-            @JsonProperty(value = "caption")String caption,
-            @JsonProperty(value = "type") String type,
-            @JsonProperty(value = "copyright") String copyright,
-            @JsonProperty(value = "media-metadata") List<MediaMetaData> metaDataList) {
+    public PopularMedia(
+            String caption,
+            String type,
+            String copyright,
+            List<MediaMetaData> metaDataList) {
         this.caption = caption;
         this.type = type;
         this.copyright = copyright;
@@ -51,7 +49,7 @@ public class Media {
     public MediaMetaData getJumbo(){ return getImageFormat(JUMBO_FORMAT);}
 
     public MediaMetaData getAnyImage(List<String> formats) {
-        Media.MediaMetaData metaData;
+        MediaMetaData metaData;
         for(String format : formats){
             metaData = getImageFormat(format);
             if (metaData != null)
@@ -73,27 +71,5 @@ public class Media {
                 return image;
         }
         return null;
-    }
-
-    public static class MediaMetaData {
-        public String url;
-        public String format;
-        public int height;
-        public int width;
-        public MediaMetaData(
-                String url,
-                String format,
-                int height,
-                int width) {
-            this.url = url;
-            this.format = format;
-            this.height = height;
-            this.width = width;
-        }
-
-        @Override
-        public String toString(){
-            return String.format("url : %s, format : %s",url,format);
-        }
     }
 }

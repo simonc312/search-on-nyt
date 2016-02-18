@@ -1,7 +1,7 @@
 package com.simonc312.searchnyt.mixins;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.simonc312.searchnyt.models.Media;
+import com.simonc312.searchnyt.models.PopularMedia;
 
 import java.util.List;
 
@@ -16,6 +16,6 @@ public abstract class PopularArticleMixin {
                         @JsonProperty(value = "byline") String byline,
                         @JsonProperty(value = "published_date") String publishedDate,
                         @JsonProperty(value = "abstract") String summary,
-                        @JsonProperty(value = "media") List<Media> media) { }
+                        @JsonProperty(value = "media") List<PopularMedia> media) { }
 
 }

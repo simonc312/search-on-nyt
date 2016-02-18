@@ -3,15 +3,12 @@ package com.simonc312.searchnyt.models;
 import android.text.Html;
 import android.text.Spanned;
 
-import com.simonc312.searchnyt.helpers.DateHelper;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Simon on 1/27/2016.
  */
-public abstract class Article {
+public abstract class Article<MediaType> {
 
     private final String section;
     private final String title;
@@ -20,7 +17,7 @@ public abstract class Article {
     private final String summary;
     private final String url;
 
-    public List<Media> media;
+    public List<MediaType> media;
 
     public Article(
             String section,
@@ -29,7 +26,7 @@ public abstract class Article {
             String byline,
             String publishedDate,
             String summary,
-            List<Media> media){
+            List<MediaType> media){
         this.section = section;
         this.title = title;
         this.url = url;
@@ -54,37 +51,7 @@ public abstract class Article {
     }
 
     public String getCaption() {
-        if(media != null && !media.isEmpty()){
-            Media m = media.get(0);
-            return m.caption;
-        } else
-            return "no caption";
-    }
-
-    public Media.MediaMetaData getMetaData(String format){
-        List<String> formats = new ArrayList<>(4);
-        formats.add(format);
-        formats.add(Media.SQUARE_FORMAT);
-        formats.add(Media.THUMBNAIL_FORMAT);
-        formats.add(Media.NORMAL_FORMAT);
-        return getAnyImageType(formats);
-    }
-
-    public Media.MediaMetaData getMetaData() {
-        List<String> formats = new ArrayList<>(3);
-        formats.add(Media.SQUARE_FORMAT);
-        formats.add(Media.THUMBNAIL_FORMAT);
-        formats.add(Media.NORMAL_FORMAT);
-        return getAnyImageType(formats);
-    }
-
-    public Media.MediaMetaData getJumboMetaData() {
-        List<String> formats = new ArrayList<>(4);
-        formats.add(Media.JUMBO_FORMAT);
-        formats.add(Media.SQUARE_FORMAT);
-        formats.add(Media.THUMBNAIL_FORMAT);
-        formats.add(Media.NORMAL_FORMAT);
-        return getAnyImageType(formats);
+        return "caption";
     }
 
     public String getSummary() {
@@ -102,6 +69,12 @@ public abstract class Article {
     public Spanned getDisplayTitle(){ return Html.fromHtml(title);}
 
     public abstract String getRelativeTimePosted();
+
+    public abstract MediaMetaData getMetaData(String format);
+
+    public abstract MediaMetaData getMetaData();
+
+    public abstract MediaMetaData getJumboMetaData();
 
     @Override
     public boolean equals(Object o) {
@@ -128,16 +101,5 @@ public abstract class Article {
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
-    }
-
-    private Media.MediaMetaData getAnyImageType(List<String> formatOrderList){
-        Media.MediaMetaData source = null;
-        if(media != null){
-            for(int i=0;i<media.size();i++){
-                Media m = media.get(i);
-                source = m.getAnyImage(formatOrderList);
-            }
-        }
-        return source;
     }
 }

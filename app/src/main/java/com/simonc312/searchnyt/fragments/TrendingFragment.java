@@ -18,26 +18,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.simonc312.searchnyt.adapters.TrendingAdapter;
 import com.simonc312.searchnyt.api.AbstractApiRequest;
 import com.simonc312.searchnyt.api.ApiRequestInterface;
 import com.simonc312.searchnyt.api.ApiHandler;
 import com.simonc312.searchnyt.api.PopularApiRequest;
+import com.simonc312.searchnyt.api.SearchApiRequest;
 import com.simonc312.searchnyt.helpers.HorizontalDividerItemDecoration;
 import com.simonc312.searchnyt.mixins.PopularArticleMixin;
 import com.simonc312.searchnyt.mixins.PopularMediaMixin;
+import com.simonc312.searchnyt.mixins.PopularMetaDataMixin;
+import com.simonc312.searchnyt.mixins.SearchArticleDeserializer;
+import com.simonc312.searchnyt.mixins.SearchMediaMixin;
 import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.helpers.EndlessRVScrollListener;
 import com.simonc312.searchnyt.helpers.GridItemDecoration;
-import com.simonc312.searchnyt.models.Media;
+import com.simonc312.searchnyt.models.MediaMetaData;
 import com.simonc312.searchnyt.models.PopularArticle;
+import com.simonc312.searchnyt.models.PopularMedia;
+import com.simonc312.searchnyt.models.SearchArticle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +51,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.BindInt;
@@ -171,7 +176,11 @@ public class TrendingFragment extends Fragment
 
     @Override
     public void onSuccess(JSONObject response) {
-        handleSuccessResponse(response);
+        Log.d("response",response.toString());
+        if(query != null)
+            handleSearchSuccessResponse(response);
+        else
+            handleSuccessResponse(response);
         stopRefresh();
     }
 
@@ -232,8 +241,7 @@ public class TrendingFragment extends Fragment
         if(query == null)
             fetchPopularAsync();
         else{
-            if(queryType == SearchFragment.TAG_TYPE)
-                fetchTagNameSearchAsync(query);
+            fetchSearchAsync(query);
         }
     }
 
@@ -320,10 +328,12 @@ public class TrendingFragment extends Fragment
         sendRequest(request);
     }
 
-    private void fetchTagNameSearchAsync(String tag){
-        /*TagNameSearchApiRequest request = new TagNameSearchApiRequest(getContext(),this);
-        request.setTag(tag);
-        sendRequest(request);*/
+    private void fetchSearchAsync(String tag){
+        SearchApiRequest request = new SearchApiRequest(getContext(),this);
+        request.setQuery("pope");
+        request.setBeginDate("20150210");
+        request.setOffset(adapter.getItemCount());
+        sendRequest(request);
     }
 
     private void sendRequest(ApiRequestInterface request){
@@ -337,13 +347,35 @@ public class TrendingFragment extends Fragment
                     .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
                     .addMixIn(PopularArticle.class, PopularArticleMixin.class)
-                    .addMixIn(Media.MediaMetaData.class, PopularMediaMixin.class)
+                    .addMixIn(PopularMedia.class,PopularMediaMixin.class)
+                    .addMixIn(MediaMetaData.class, PopularMetaDataMixin.class)
                     .reader()
                     .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                     .forType(new TypeReference<List<PopularArticle>>() {});
             List<Article> articleList = reader.readValue(dataArray.toString());
             adapter.update(articleList, addToEnd);
 
+
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleSearchSuccessResponse(JSONObject response) {
+        try {
+            JSONObject responseObject = response.getJSONObject("response");
+            JSONArray dataArray = responseObject.getJSONArray("docs");
+            SimpleModule module = new SimpleModule();
+            module.addDeserializer(SearchArticle.class, new SearchArticleDeserializer());
+            ObjectReader reader = new ObjectMapper()
+                    .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .registerModule(module)
+                    .reader()
+                    .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+                    .forType(new TypeReference<List<SearchArticle>>() {});
+            List<Article> articleList = reader.readValue(dataArray.toString());
+            adapter.update(articleList, addToEnd);
 
         } catch (JSONException | IOException e) {
             e.printStackTrace();
