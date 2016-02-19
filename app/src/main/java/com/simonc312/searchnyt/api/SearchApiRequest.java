@@ -22,8 +22,18 @@ public class SearchApiRequest extends AbstractApiRequest {
         putParam("begin_date",date);
     }
 
-    public void setOffset(int offset){
-        putParam("offset",offset);
+
+    public void setEndDate(String endDate) {
+        putParam("end_date", endDate);
+    }
+
+    public void setPage(int page){
+        putParam("page",page);
+    }
+
+    public void setSections(){
+        putParam("fq","article");
+        //putParam("fq","document_type:(\"Article\" \"Blog\" \"Column\" \"Front Page\" \"Editorial\" \"Interview\" \"News\" \"Op-Ed\" \"Obituary\" \"SectionFront\")");
     }
 
     @Override
@@ -35,4 +45,5 @@ public class SearchApiRequest extends AbstractApiRequest {
     public String getUrl() {
         return String.format("http://api.nytimes.com/svc/search/v2/articlesearch.%s",RESPONSE_TYPE);
     }
+
 }

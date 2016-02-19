@@ -51,7 +51,7 @@ public class SearchArticle extends Article<MediaMetaData>{
 
     public MediaMetaData getImageFormat(String type) {
         for (MediaMetaData image : media){
-            if (image.format.contains(type))
+            if (image.format != null && image.format.contains(type))
                 return image;
         }
         return null;

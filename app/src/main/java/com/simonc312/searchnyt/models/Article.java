@@ -36,7 +36,7 @@ public abstract class Article<MediaType> {
         this.media = media;
     }
 
-    public String getSection(){return section;};
+    public String getSection(){return section;}
 
     public String getTitle() {
         return title;
@@ -60,6 +60,13 @@ public abstract class Article<MediaType> {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getDisplaySection(){
+        if(section == null || section.equals("null"))
+            return getDisplayByline();
+        else
+            return section;
     }
 
     public String getDisplayByline(){

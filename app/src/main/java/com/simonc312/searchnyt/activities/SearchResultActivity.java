@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.simonc312.searchnyt.fragments.TrendingFragment;
@@ -41,6 +43,7 @@ public class SearchResultActivity extends AppCompatActivity implements TrendingF
         ButterKnife.bind(this);
         handleSearchIntent(getIntent());
         setupSupportActionBar();
+        setTitle();
         broadcastReciever = new LayoutChangeBroadcastReciever();
         swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT,QUERY,SEARCH_TYPE));
 
@@ -58,7 +61,13 @@ public class SearchResultActivity extends AppCompatActivity implements TrendingF
         actionBar.setShowHideAnimationEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(TITLE);
+    }
+
+    private void setTitle(){
+        TextView tx = (TextView)findViewById(R.id.app_name);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/EnglishTowne.ttf");
+        tx.setTypeface(custom_font);
+        tx.setText(TITLE);
     }
 
     private void handleSearchIntent(Intent intent) {
