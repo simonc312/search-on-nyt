@@ -11,10 +11,10 @@ import java.util.GregorianCalendar;
  */
 public class DateHelper {
     private static DateHelper instance;
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat displayDateFormat = new SimpleDateFormat("MMM d");
     private static SimpleDateFormat displayOldDateFormat = new SimpleDateFormat("MMM d, yyyy");
-    private static SimpleDateFormat filterDateFormat = new SimpleDateFormat("yyyymmdd");
+    private static SimpleDateFormat filterDateFormat = new SimpleDateFormat("yyyyMMdd");
     private final Calendar calendar;
     private final Calendar calendar2;
 
@@ -53,5 +53,10 @@ public class DateHelper {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Calendar getCalendarFromLong(long date) {
+        calendar.setTime(new Date(date));
+        return calendar;
     }
 }

@@ -5,8 +5,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.helpers.DateHelper;
@@ -26,6 +26,10 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
     private static final String DATE_EXTRA = "date_extra";
     private static final String TITLE_EXTRA = "title_extra";
     @Bind(R.id.dp_date) DatePicker datePicker;
+    @Bind(R.id.btn_cancel)
+    TextView btnCancel;
+    @Bind(R.id.btn_save)
+    TextView btnSave;
     private FilterListener mListener;
     private Calendar calendar;
 
@@ -36,6 +40,13 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
         bundle.putInt(TITLE_EXTRA, titleId);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(calendar == null)
+            calendar = new GregorianCalendar();
     }
 
     @Override
@@ -50,44 +61,30 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
         ButterKnife.bind(this,view);
 
         final int title = getArguments().getInt(TITLE_EXTRA,R.string.pick_date);
-        String beginDate = getArguments().getString(DATE_EXTRA);
+        final String beginDate = getArguments().getString(DATE_EXTRA);
         getDialog().setTitle(title);
 
         initializeDatePicker(beginDate);
 
-        final Button cancelButton = (Button) view.findViewById(R.id.btn_cancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getDialog().cancel();
             }
         });
 
-        final Button saveButton = (Button) view.findViewById(R.id.btn_save);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String beginDate = getSelectedDate(calendar);
-                if (beginDate != null && !beginDate.isEmpty()) {
-                    mListener.onUpdate(beginDate, title);
+                String date = getSelectedDate(calendar);
+                if (date != null && !date.isEmpty()) {
+                    mListener.onUpdate(date, title);
                     getDialog().dismiss();
                 }
 
             }
         });
     }
-
-
-   /* @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (FilterListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement " + FilterListener.class.getSimpleName());
-        }
-    }*/
 
     @Override
     public void onDetach(){
@@ -96,22 +93,24 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
     }
 
     private void initializeDatePicker(String date) {
-        datePicker.setMaxDate(getMinDate());
+        long initialDateMilli = getMaxDate();
+        datePicker.setMaxDate(initialDateMilli);
         datePicker.requestFocus();
-        int year = 2016;
-        int month = 1;
-        int day = 10;
+        Calendar initialCalendar = DateHelper.getInstance().getCalendarFromLong(initialDateMilli);
         if(date != null && !date.isEmpty()) {
             Date initialDate = getFilterParsedDate(date);
             if(initialDate != null) {
-                if(calendar == null)
-                    calendar = new GregorianCalendar();
                 calendar.setTime(initialDate);
-                year = calendar.get(Calendar.YEAR);
-                month = calendar.get(Calendar.MONTH);
-                day = calendar.get(Calendar.DAY_OF_MONTH);
+                initialCalendar = calendar;
             }
         }
+        initDateWithCalendar(initialCalendar);
+    }
+
+    private void initDateWithCalendar(Calendar calendar){
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
         datePicker.init(year, month, day, this);
     }
 
@@ -123,19 +122,19 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
         return DateHelper.getInstance().getFilterFormatDate(calendar.getTime());
     }
 
-    private long getMinDate(){
+    /**
+     * Returns today's date
+     * @return
+     */
+    private long getMaxDate(){
         return new Date().getTime();
     }
 
     @Override
     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        if(calendar == null)
-            calendar = new GregorianCalendar(year,monthOfYear,dayOfMonth);
-        else{
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH,monthOfYear);
-            calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-        }
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH,monthOfYear);
+        calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
     }
 
     public DateDialogFragment setListener(FilterListener listener) {
@@ -144,6 +143,6 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
     }
 
     public interface FilterListener {
-        void onUpdate(String date, int titleid);
+        void onUpdate(String date, int titleId);
     }
 }
