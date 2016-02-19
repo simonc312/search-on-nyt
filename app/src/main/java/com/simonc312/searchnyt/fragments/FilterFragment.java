@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.simonc312.searchnyt.R;
+import com.simonc312.searchnyt.helpers.DateHelper;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,6 +50,10 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeDates();
+    }
+
+    private void initializeDates() {
     }
 
     @Override
@@ -87,22 +92,20 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
     public void handleEndDateClick(View view){
         DateDialogFragment.newInstance(endDate,R.string.pick_end_date)
                 .setListener(this)
-                .show(getChildFragmentManager(), "tv_endDate");
+                .show(getChildFragmentManager(), "endDate");
     }
 
-    @OnClick(R.id.btn_cancel)
-    public void handleCancelClick(View view){
+    @OnClick(R.id.btn_default)
+    public void handleCancelClick(){
         //reset values
         tv_beginDate.setText(null);
         tv_endDate.setText(null);
+
     }
 
     @OnClick(R.id.btn_save)
     public void handleSaveClick(View view){
-
-        String beginDateText = tv_beginDate.getText().toString();
-        String endDateText = tv_endDate.getText().toString();
-        mListener.onApplyFilter(beginDateText, endDateText);
+        mListener.onApplyFilter(beginDate, endDate, true);
     }
 
     @Override
@@ -124,6 +127,12 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
      * activity.
      */
     public interface InteractionListener {
-        void onApplyFilter(String beginDate, String endDate);
+        /**
+         *
+         * @param beginDate
+         * @param endDate
+         * @param finishFiltering use to determine if done filtering and okay to start search.
+         */
+        void onApplyFilter(String beginDate, String endDate, boolean finishFiltering);
     }
 }

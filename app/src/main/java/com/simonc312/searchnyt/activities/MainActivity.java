@@ -18,7 +18,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setTitle(APP_NAME_TITLE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT, null, TrendingFragment.TRENDING_TYPE));
+        swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT, null));
     }
 
     @Override

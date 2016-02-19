@@ -26,7 +26,7 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
     private static final String DATE_EXTRA = "date_extra";
     private static final String TITLE_EXTRA = "title_extra";
     @Bind(R.id.dp_date) DatePicker datePicker;
-    @Bind(R.id.btn_cancel)
+    @Bind(R.id.btn_default)
     TextView btnCancel;
     @Bind(R.id.btn_save)
     TextView btnSave;

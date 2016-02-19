@@ -12,7 +12,8 @@
     <string name="action_query_changed">action_query_changed</string>
     <string name="filter_title">Filters</string>
     <string name="btn_cancel">Cancel</string>
-    <string name="btn_save">Apply</string>
+    <string name="btn_default">Default</string>
+    <string name="btn_search">Search</string>
     <string name="minCalendarBeginDate">09/18/1851</string>
     <string name="earliestSearchBeginDate">18510918</string>
     <string name="from">From</string>

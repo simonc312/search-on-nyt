@@ -76,14 +76,12 @@ public class SearchQueryActivity extends AppCompatActivity
         MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                // Do something when collapsed
                 finish();
                 return true;  // Return true to collapse action view
             }
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                // Do something when expanded
                 return true;  // Return true to expand action view
             }
         });
@@ -121,22 +119,22 @@ public class SearchQueryActivity extends AppCompatActivity
 
     public void onApplyFilter(SearchQuery searchQuery) {
         if(searchView != null){
-            int queryType = FilterFragment.FILTER_TYPE;
             Bundle bundle = new Bundle();
             bundle.putString("title", searchQuery.getQuery());
-            bundle.putInt("queryType", queryType);
             bundle.putParcelable("query",searchQuery);
             triggerSearch(searchQuery.getQuery(), bundle);
         }
     }
 
     @Override
-    public void onApplyFilter(String beginDate, String endDate){
+    public void onApplyFilter(String beginDate, String endDate, boolean startSearch){
         if(beginDate != null)
             searchQuery.setBeginDate(beginDate);
         if(endDate != null)
             searchQuery.setEndDate(endDate);
-        String query = searchView.getQuery().toString();
-        startSearchRequest(query);
+        if(startSearch){
+            String query = searchView.getQuery().toString();
+            startSearchRequest(query);
+        }
     }
 }

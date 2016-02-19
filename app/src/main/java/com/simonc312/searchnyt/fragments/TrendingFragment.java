@@ -71,7 +71,6 @@ public class TrendingFragment extends Fragment
     public static final int GRID_LAYOUT = 0;
     public static final int LINEAR_LAYOUT = 1;
     public static final int STAGGERED_LAYOUT = 2;
-    public static final int TRENDING_TYPE = -123;
     @BindInt(R.integer.grid_layout_span_count)
     int GRID_LAYOUT_SPAN_COUNT;
     @BindInt(R.integer.grid_layout_item_spacing)
@@ -91,7 +90,6 @@ public class TrendingFragment extends Fragment
     private Query query;
     //determines where to add new posts
     private boolean addToEnd = false;
-    private int queryType;
     //determines which page to request
     private int currentPage = 0;
     private int requestedLayout;
@@ -100,11 +98,10 @@ public class TrendingFragment extends Fragment
         // Required empty public constructor
     }
 
-    public static TrendingFragment newInstance(int layoutRequested,Query query, int queryType){
+    public static TrendingFragment newInstance(int layoutRequested,Query query){
         Bundle bundle = new Bundle();
         bundle.putInt("layoutRequested",layoutRequested);
         bundle.putParcelable("query", query);
-        bundle.putInt("queryType",queryType);
         TrendingFragment fragment = new TrendingFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -211,7 +208,6 @@ public class TrendingFragment extends Fragment
         if(!bundle.isEmpty()){
             requestedLayout = bundle.getInt("layoutRequested",STAGGERED_LAYOUT);
             query = bundle.getParcelable("query");
-            queryType = bundle.getInt("queryType",TRENDING_TYPE);
         }
     }
 

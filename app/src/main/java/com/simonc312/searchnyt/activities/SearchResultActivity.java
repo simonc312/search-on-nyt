@@ -11,7 +11,6 @@ import com.simonc312.searchnyt.models.Query;
 public class SearchResultActivity extends BaseActivity {
 
     private String TITLE;
-    private int SEARCH_TYPE;
     private Query QUERY;
 
     @Override
@@ -19,7 +18,7 @@ public class SearchResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         handleSearchIntent(getIntent());
         setTitle(TITLE);
-        swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT, QUERY, SEARCH_TYPE));
+        swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT, QUERY));
     }
 
     @Override
@@ -37,7 +36,6 @@ public class SearchResultActivity extends BaseActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             Bundle bundle = intent.getBundleExtra(SearchManager.APP_DATA);
             QUERY = bundle.getParcelable("query");
-            SEARCH_TYPE = bundle.getInt("queryType");
             TITLE = bundle.getString("title");
         }
     }
