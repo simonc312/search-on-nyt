@@ -1,6 +1,5 @@
 package com.simonc312.searchnyt.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -22,21 +21,18 @@ import butterknife.ButterKnife;
 /**
  * Created by Simon on 2/18/2016.
  */
-public class FilterDialogFragment extends DialogFragment implements DatePicker.OnDateChangedListener {
+public class DateDialogFragment extends DialogFragment implements DatePicker.OnDateChangedListener {
 
-    private static final String BEGIN_DATE_EXTRA = "begin_date_extra";
-    private static final String END_DATE_EXTRA = "end_date_extra";
-    private static final String SECTIONS_EXTRA = "sections_extra";
+    private static final String DATE_EXTRA = "date_extra";
     private static final String TITLE_EXTRA = "title_extra";
-    @Bind(R.id.dp_begin_date) DatePicker datePicker;
+    @Bind(R.id.dp_date) DatePicker datePicker;
     private FilterListener mListener;
-    private Calendar beginCalendar;
-    private Calendar endCalendar;
+    private Calendar calendar;
 
-    public static FilterDialogFragment newInstance(){
-        FilterDialogFragment fragment = new FilterDialogFragment();
+    public static DateDialogFragment newInstance(int titleId){
+        DateDialogFragment fragment = new DateDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(TITLE_EXTRA, R.string.filter_title);
+        bundle.putInt(TITLE_EXTRA, titleId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -44,7 +40,7 @@ public class FilterDialogFragment extends DialogFragment implements DatePicker.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_filter_dialog, container);
+        return inflater.inflate(R.layout.fragment_dialog_date, container);
     }
 
     @Override
@@ -52,8 +48,8 @@ public class FilterDialogFragment extends DialogFragment implements DatePicker.O
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
 
-        int title = getArguments().getInt(TITLE_EXTRA);
-        String beginDate = getArguments().getString(BEGIN_DATE_EXTRA);
+        final int title = getArguments().getInt(TITLE_EXTRA,R.string.pick_date);
+        String beginDate = getArguments().getString(DATE_EXTRA);
         getDialog().setTitle(title);
 
         initializeDatePicker(beginDate);
@@ -70,9 +66,9 @@ public class FilterDialogFragment extends DialogFragment implements DatePicker.O
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String beginDate = getSelectedDate(beginCalendar);
+                String beginDate = getSelectedDate(calendar);
                 if (beginDate != null && !beginDate.isEmpty()) {
-                    mListener.onUpdate(beginDate);
+                    mListener.onUpdate(beginDate, title);
                     getDialog().dismiss();
                 }
 
@@ -81,18 +77,16 @@ public class FilterDialogFragment extends DialogFragment implements DatePicker.O
     }
 
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
+   /* @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (FilterListener) activity;
+            mListener = (FilterListener) context;
         } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement " + FilterListener.class.getSimpleName());
         }
-    }
+    }*/
 
     @Override
     public void onDetach(){
@@ -100,22 +94,22 @@ public class FilterDialogFragment extends DialogFragment implements DatePicker.O
         super.onDetach();
     }
 
-    private void initializeDatePicker(String beginDate) {
+    private void initializeDatePicker(String date) {
         datePicker.setMinDate(getMinDate());
         datePicker.requestFocus();
         int year = 2016;
         int month = 1;
         int day = 10;
-        if(beginDate != null && !beginDate.isEmpty()) {
-            Date initialDate = getFilterParsedDate(beginDate);
+        if(date != null && !date.isEmpty()) {
+            Date initialDate = getFilterParsedDate(date);
             if(initialDate != null) {
-                beginCalendar.setTime(initialDate);
-                year = beginCalendar.get(Calendar.YEAR);
-                month = beginCalendar.get(Calendar.MONTH);
-                day = beginCalendar.get(Calendar.DAY_OF_MONTH);
+                calendar.setTime(initialDate);
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                day = calendar.get(Calendar.DAY_OF_MONTH);
             }
         }
-        datePicker.init(year,month,day,this);
+        datePicker.init(year, month, day, this);
     }
 
     private Date getFilterParsedDate(String date){
@@ -132,10 +126,15 @@ public class FilterDialogFragment extends DialogFragment implements DatePicker.O
 
     @Override
     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        beginCalendar = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+        calendar = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+    }
+
+    public DateDialogFragment setListener(FilterListener listener) {
+        mListener = listener;
+        return this;
     }
 
     public interface FilterListener {
-        void onUpdate(String beginDate);
+        void onUpdate(String date, int titleid);
     }
 }

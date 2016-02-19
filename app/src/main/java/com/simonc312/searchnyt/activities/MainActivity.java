@@ -16,9 +16,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setupSupportActionBar();
         setTitle(APP_NAME_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         swapFragment(TrendingFragment.newInstance(TrendingFragment.STAGGERED_LAYOUT, null, TrendingFragment.TRENDING_TYPE));
     }
 

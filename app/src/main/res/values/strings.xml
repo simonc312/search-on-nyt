@@ -6,7 +6,7 @@
     <string name="popular_id">33b85f6537208d440f0dcbfa24c3d55d:3:74301097</string>
     <string name="action_layout_change">ACTION_LAYOUT_CHANGE</string>
     <string name="item_position_extra">ITEM_POSITION_EXTRA</string>
-    <string name="search_hint">Search for users or tags</string>
+    <string name="search_hint">Search articles</string>
 
     <string name="action_back_pressed">ACTION_BACK_PRESSED</string>
     <string name="action_query_changed">action_query_changed</string>
@@ -15,4 +15,12 @@
     <string name="btn_save">Apply</string>
     <string name="maxCalendarBeginDate">09/18/1851</string>
     <string name="earliestSearchBeginDate">18510918</string>
+    <string name="from">From</string>
+    <string name="to">to</string>
+    <string name="end_date">Finish</string>
+    <string name="begin_date">Start</string>
+    <string name="pick_date">Choose Date</string>
+    <string name="pick_start_date">Choose Start Date</string>
+    <string name="pick_end_date">Choose Finish Date</string>
+    <string name="btn_all_set">All Set</string>
 </resources>

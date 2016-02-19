@@ -53,4 +53,12 @@ public class SearchQuery extends Query implements Parcelable {
     public String getEndDate() {
         return endDate;
     }
+
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 }

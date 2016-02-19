@@ -2,11 +2,9 @@ package com.simonc312.searchnyt.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -14,44 +12,31 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.simonc312.searchnyt.fragments.SearchFragment;
-
-import static com.simonc312.searchnyt.fragments.SearchFragment.SEARCH_TYPE;
-
+import com.simonc312.searchnyt.R;
+import com.simonc312.searchnyt.fragments.FilterFragment;
 import com.simonc312.searchnyt.helpers.DateHelper;
 import com.simonc312.searchnyt.models.SearchQuery;
-import com.simonc312.searchnyt.R;
-import com.simonc312.searchnyt.viewPagers.ViewPagerAdapter;
 
 import java.util.Date;
 
 import butterknife.Bind;
-import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 
 
 public class SearchQueryActivity extends AppCompatActivity
-        implements SearchFragment.InteractionListener {
-    @BindDrawable(R.drawable.ic_favorite_red_500_18dp)
-    Drawable FILTER_DRAWABLE;
-    @Bind(R.id.tabs)
-    TabLayout tabLayout;
+        implements FilterFragment.InteractionListener {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.viewpager)
-    ViewPager viewPager;
     private SearchQuery searchQuery;
     private SearchView searchView;
-    private ViewPagerAdapter pagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_query);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupSupportActionBar();
-        setupViewPager();
         setupSearchQuery();
+        swapFragment(FilterFragment.newInstance());
     }
 
     private void setupSearchQuery() {
@@ -60,17 +45,8 @@ public class SearchQueryActivity extends AppCompatActivity
         searchQuery = new SearchQuery("",defaultBeginDate,defaultEndDate);
     }
 
-    private void setupViewPager() {
-        pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addFragment(SearchFragment.newInstance(SEARCH_TYPE), "Filters", FILTER_DRAWABLE);
-        viewPager.setAdapter(pagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-
-    }
-
     private void setupSupportActionBar(){
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setHideOnContentScrollEnabled(true);
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setShowHideAnimationEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -83,8 +59,6 @@ public class SearchQueryActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-            case R.id.action_search:
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -117,10 +91,7 @@ public class SearchQueryActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(query.length() > 1){
-                    searchQuery.setQuery(query);
-                    onListFragmentInteraction(searchQuery);
-                }
+                startSearchRequest(query);
                 return true;
             }
 
@@ -133,15 +104,39 @@ public class SearchQueryActivity extends AppCompatActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public void onListFragmentInteraction(SearchQuery searchQuery) {
+    private void startSearchRequest(String query) {
+        if(query.length() > 1){
+            searchQuery.setQuery(query);
+            onApplyFilter(searchQuery);
+        }
+    }
+
+    protected void swapFragment(Fragment fragment){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void onApplyFilter(SearchQuery searchQuery) {
         if(searchView != null){
-            int queryType = SearchFragment.SEARCH_TYPE;
+            int queryType = FilterFragment.FILTER_TYPE;
             Bundle bundle = new Bundle();
             bundle.putString("title", searchQuery.getQuery());
             bundle.putInt("queryType", queryType);
             bundle.putParcelable("query",searchQuery);
             triggerSearch(searchQuery.getQuery(), bundle);
         }
+    }
+
+    @Override
+    public void onApplyFilter(String beginDate, String endDate){
+        if(beginDate != null)
+            searchQuery.setBeginDate(beginDate);
+        if(endDate != null)
+            searchQuery.setEndDate(endDate);
+        String query = searchView.getQuery().toString();
+        startSearchRequest(query);
     }
 }
