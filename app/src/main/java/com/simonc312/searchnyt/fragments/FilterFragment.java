@@ -78,14 +78,14 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
 
     @OnClick(R.id.tv_beginDate)
     public void handleBeginDateClick(View view){
-        DateDialogFragment.newInstance(R.string.pick_start_date)
+        DateDialogFragment.newInstance(beginDate,R.string.pick_start_date)
                 .setListener(this)
                 .show(getChildFragmentManager(), "startDate");
     }
 
     @OnClick(R.id.tv_endDate)
     public void handleEndDateClick(View view){
-        DateDialogFragment.newInstance(R.string.pick_end_date)
+        DateDialogFragment.newInstance(endDate,R.string.pick_end_date)
                 .setListener(this)
                 .show(getChildFragmentManager(), "tv_endDate");
     }

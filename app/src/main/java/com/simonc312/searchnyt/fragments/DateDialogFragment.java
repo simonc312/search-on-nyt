@@ -29,9 +29,10 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
     private FilterListener mListener;
     private Calendar calendar;
 
-    public static DateDialogFragment newInstance(int titleId){
+    public static DateDialogFragment newInstance(String date, int titleId){
         DateDialogFragment fragment = new DateDialogFragment();
         Bundle bundle = new Bundle();
+        bundle.putString(DATE_EXTRA, date);
         bundle.putInt(TITLE_EXTRA, titleId);
         fragment.setArguments(bundle);
         return fragment;
@@ -95,7 +96,7 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
     }
 
     private void initializeDatePicker(String date) {
-        datePicker.setMinDate(getMinDate());
+        datePicker.setMaxDate(getMinDate());
         datePicker.requestFocus();
         int year = 2016;
         int month = 1;
@@ -103,6 +104,8 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
         if(date != null && !date.isEmpty()) {
             Date initialDate = getFilterParsedDate(date);
             if(initialDate != null) {
+                if(calendar == null)
+                    calendar = new GregorianCalendar();
                 calendar.setTime(initialDate);
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
@@ -126,7 +129,13 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
 
     @Override
     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        calendar = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+        if(calendar == null)
+            calendar = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+        else{
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH,monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+        }
     }
 
     public DateDialogFragment setListener(FilterListener listener) {
