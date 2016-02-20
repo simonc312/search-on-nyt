@@ -33,16 +33,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_weight="0.25"
             android:text="@string/from"
             android:textAppearance="@style/AppTheme.TextAppearance.Search.Bold"/>
 
         <TextView
             android:id="@+id/tv_beginDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/begin_date_hint"
-            android:layout_weight="1"
+            android:layout_weight="1.25"
             android:gravity="center"
             android:background="?attr/editTextBackground"/>
 
@@ -50,16 +50,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_weight="0.25"
             android:gravity="center"
             android:text="@string/to"/>
 
         <TextView
             android:id="@+id/tv_endDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/end_date_hint"
-            android:layout_weight="1"
+            android:layout_weight="1.25"
             android:gravity="center"
             android:background="?attr/editTextBackground"/>
 
