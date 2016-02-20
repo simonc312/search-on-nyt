@@ -41,6 +41,10 @@
         <item name="android:textColor">@color/md_grey_400</item>
     </style>
 
+    <style name="AppTheme.TextAppearance.List.CheckableItem" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@drawable/checkable_list_item_text_color</item>
+    </style>
+
     <style name="AppTheme.TextAppearance.CustomTab" parent="TextAppearance.AppCompat.Body2">
         <item name="android:textSize">@dimen/abc_text_size_button_material</item>
         <!--<item name="tabSelectedTextColor"></item>-->

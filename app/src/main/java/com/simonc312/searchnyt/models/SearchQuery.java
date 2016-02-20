@@ -9,17 +9,20 @@ import android.os.Parcelable;
 public class SearchQuery extends Query implements Parcelable {
     private String beginDate;
     private String endDate;
+    private String sections;
 
-    public SearchQuery(String query, String beginDate, String endDate){
+    public SearchQuery(String query, String beginDate, String endDate, String sections){
         super(query);
         this.beginDate = beginDate;
         this.endDate = endDate;
+        this.sections = sections;
     }
 
     protected SearchQuery(Parcel in) {
         super(in);
         beginDate = in.readString();
         endDate = in.readString();
+        sections = in.readString();
     }
 
     @Override
@@ -27,6 +30,7 @@ public class SearchQuery extends Query implements Parcelable {
         super.writeToParcel(dest, flags);
         dest.writeString(beginDate);
         dest.writeString(endDate);
+        dest.writeString(sections);
     }
 
     @Override
@@ -54,6 +58,8 @@ public class SearchQuery extends Query implements Parcelable {
         return endDate;
     }
 
+    public String getSections(){return sections;}
+
     public void setBeginDate(String beginDate) {
         this.beginDate = beginDate;
     }
@@ -61,4 +67,6 @@ public class SearchQuery extends Query implements Parcelable {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
+
+    public void setSections(String sections){this.sections = sections;}
 }

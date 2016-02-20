@@ -31,9 +31,9 @@ public class SearchApiRequest extends AbstractApiRequest {
         putParam("page",page);
     }
 
-    public void setSections(){
-        putParam("fq","article");
-        //putParam("fq","document_type:(\"Article\" \"Blog\" \"Column\" \"Front Page\" \"Editorial\" \"Interview\" \"News\" \"Op-Ed\" \"Obituary\" \"SectionFront\")");
+    public void setSections(String sections){
+        putParam("fq",String.format("section_name:(%s)",sections));
+        //putParam("fq","section_name:(\"Article\" \"Blog\" \"Column\" \"Front Page\" \"Editorial\" \"Interview\" \"News\" \"Op-Ed\" \"Obituary\" \"SectionFront\")");
     }
 
     @Override

@@ -64,7 +64,30 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_section_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sections"
+        android:layout_below="@+id/ll_dates"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+         />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_sections"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_default"
+        android:layout_below="@+id/tv_section_title"
+        android:paddingTop="@dimen/default_margin"
+        android:paddingBottom="@dimen/default_margin"/>
+
+    <!--<ExpandableListView
+        android:id="@+id/elv_filters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ExpandableListView>-->
 
 
     <Button

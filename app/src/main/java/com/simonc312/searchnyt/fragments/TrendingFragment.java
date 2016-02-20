@@ -332,7 +332,7 @@ public class TrendingFragment extends Fragment
         request.setBeginDate(searchQuery.getBeginDate());
         request.setEndDate(searchQuery.getEndDate());
         request.setPage(currentPage);
-        request.setSections();
+        request.setSections(searchQuery.getSections());
         sendRequest(request);
     }
 

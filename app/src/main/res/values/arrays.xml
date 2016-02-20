@@ -8,7 +8,6 @@
         <item>Fashion &amp; Style</item>
         <item>Food</item>
         <item>Front Page</item>
-        <item>Global Home</item>
         <item>Health</item>
         <item>Magazine</item>
         <item>Opinion</item>
@@ -16,5 +15,6 @@
         <item>Sports</item>
         <item>Travel</item>
         <item>Technology</item>
+        <item>U.S.</item>
     </string-array>
 </resources>

@@ -3,13 +3,21 @@ package com.simonc312.searchnyt.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.simonc312.searchnyt.R;
+import com.simonc312.searchnyt.adapters.SectionAdapter;
 import com.simonc312.searchnyt.helpers.DateHelper;
+import com.simonc312.searchnyt.models.Section;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,16 +30,20 @@ import butterknife.OnClick;
  * interface.
  */
 public class FilterFragment extends Fragment implements DateDialogFragment.FilterListener{
-    public static int FILTER_TYPE = -321;
     @Bind(R.id.tv_beginDate)
     TextView tv_beginDate;
     @Bind(R.id.tv_endDate)
     TextView tv_endDate;
+    @Bind(R.id.rv_sections)
+    RecyclerView rv_sections;
+    SectionAdapter adapter;
 
     private String beginDate;
     private String endDate;
+    private String sections;
 
     private InteractionListener mListener;
+    private static int SECTION_GRID_SPAN_COUNT = 3;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,6 +73,9 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filter, container, false);
         ButterKnife.bind(this, view);
+        adapter = new SectionAdapter(getContext(), getSections());
+        rv_sections.setAdapter(adapter);
+        rv_sections.setLayoutManager(new GridLayoutManager(getContext(),SECTION_GRID_SPAN_COUNT));
         return view;
     }
 
@@ -103,13 +118,15 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
         tv_endDate.setText(null);
         beginDate = null;
         endDate = null;
-        mListener.onApplyFilter(beginDate, endDate, false);
+        sections = null;
+        mListener.onApplyFilter(beginDate, endDate, sections, false);
 
     }
 
     @OnClick(R.id.btn_save)
     public void handleSaveClick(View view){
-        mListener.onApplyFilter(beginDate, endDate, true);
+        sections = getSelectedSectionsString(adapter.getSections());
+        mListener.onApplyFilter(beginDate, endDate, sections, true);
     }
 
     @Override
@@ -123,11 +140,25 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
             this.tv_endDate.setText(relativeDate);
             this.endDate = date;
         }
-        mListener.onApplyFilter(beginDate,endDate,false);
+        mListener.onApplyFilter(beginDate,endDate,sections,false);
     }
 
-    private String getRelativeTime(String time){
-        return DateHelper.getInstance().getRelativeFilterDate(time);
+    private List<Section> getSections() {
+        String[] sections = getContext().getResources().getStringArray(R.array.sections_array);
+        List<Section> sectionList = new ArrayList<>(sections.length);
+        for(String section : sections){
+            sectionList.add(new Section(section,true));
+        }
+        return sectionList;
+    }
+
+    private String getSelectedSectionsString(List<Section> sections){
+        StringBuilder sb = new StringBuilder();
+        for(Section section : sections){
+            if(section.isChecked())
+                sb.append(String.format(" \"%s\" ",section.getSection()));
+        }
+        return sb.toString();
     }
 
     /**
@@ -141,8 +172,9 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
          *
          * @param beginDate
          * @param endDate
+         * @param sections
          * @param finishFiltering use to determine if done filtering and okay to start search.
          */
-        void onApplyFilter(String beginDate, String endDate, boolean finishFiltering);
+        void onApplyFilter(String beginDate, String endDate, String sections, boolean finishFiltering);
     }
 }

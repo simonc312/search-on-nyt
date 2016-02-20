@@ -42,7 +42,8 @@ public class SearchQueryActivity extends AppCompatActivity
     private void setupSearchQuery() {
         String defaultBeginDate = getString(R.string.earliestSearchBeginDate);
         String defaultEndDate = DateHelper.getInstance().getFilterFormatDate(new Date());
-        searchQuery = new SearchQuery("",defaultBeginDate,defaultEndDate);
+        String defaultSections = "\"Article\"";
+        searchQuery = new SearchQuery("",defaultBeginDate,defaultEndDate,defaultSections);
     }
 
     private void setupSupportActionBar(){
@@ -121,18 +122,20 @@ public class SearchQueryActivity extends AppCompatActivity
         if(searchView != null){
             Bundle bundle = new Bundle();
             bundle.putString("title", searchQuery.getQuery());
-            bundle.putParcelable("query",searchQuery);
+            bundle.putParcelable("query", searchQuery);
             triggerSearch(searchQuery.getQuery(), bundle);
         }
     }
 
     @Override
-    public void onApplyFilter(String beginDate, String endDate, boolean startSearch){
+    public void onApplyFilter(String beginDate, String endDate, String sections, boolean startSearch){
         if(beginDate != null)
             searchQuery.setBeginDate(beginDate);
         if(endDate != null)
             searchQuery.setEndDate(endDate);
-        else if(beginDate == null)
+        if(sections != null)
+            searchQuery.setSections(sections);
+        else if(beginDate == null && endDate == null)
             setupSearchQuery();
         if(startSearch){
             String query = searchView.getQuery().toString();
