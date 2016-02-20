@@ -132,6 +132,8 @@ public class SearchQueryActivity extends AppCompatActivity
             searchQuery.setBeginDate(beginDate);
         if(endDate != null)
             searchQuery.setEndDate(endDate);
+        else if(beginDate == null)
+            setupSearchQuery();
         if(startSearch){
             String query = searchView.getQuery().toString();
             startSearchRequest(query);

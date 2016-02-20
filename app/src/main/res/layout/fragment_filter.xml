@@ -41,7 +41,7 @@
             android:id="@+id/tv_beginDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/begin_date"
+            android:hint="@string/begin_date_hint"
             android:layout_weight="1"
             android:gravity="center"
             android:background="?attr/editTextBackground"/>
@@ -58,7 +58,7 @@
             android:id="@+id/tv_endDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/end_date"
+            android:hint="@string/end_date_hint"
             android:layout_weight="1"
             android:gravity="center"
             android:background="?attr/editTextBackground"/>

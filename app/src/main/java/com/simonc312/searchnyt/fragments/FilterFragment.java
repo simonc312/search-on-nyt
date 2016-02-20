@@ -97,9 +97,12 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
 
     @OnClick(R.id.btn_default)
     public void handleCancelClick(){
-        //reset values
+        //reset values to default
         tv_beginDate.setText(null);
         tv_endDate.setText(null);
+        beginDate = null;
+        endDate = null;
+        mListener.onApplyFilter(beginDate, endDate, false);
 
     }
 
@@ -110,14 +113,20 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
 
     @Override
     public void onUpdate(String date, int titleId) {
+        String relativeDate = DateHelper.getInstance().getRelativeFilterDate(date);
         if(titleId == R.string.pick_start_date) {
-            this.tv_beginDate.setText(date);
+            this.tv_beginDate.setText(relativeDate);
             this.beginDate = date;
         }
         else if(titleId == R.string.pick_end_date) {
-            this.tv_endDate.setText(date);
+            this.tv_endDate.setText(relativeDate);
             this.endDate = date;
         }
+        mListener.onApplyFilter(beginDate,endDate,false);
+    }
+
+    private String getRelativeTime(String time){
+        return DateHelper.getInstance().getRelativeFilterDate(time);
     }
 
     /**

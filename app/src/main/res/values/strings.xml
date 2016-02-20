@@ -18,8 +18,8 @@
     <string name="earliestSearchBeginDate">18510918</string>
     <string name="from">From</string>
     <string name="to">to</string>
-    <string name="end_date">Finish</string>
-    <string name="begin_date">Start</string>
+    <string name="end_date_hint">Today</string>
+    <string name="begin_date_hint">Ancient Archives</string>
     <string name="pick_date">Choose Date</string>
     <string name="pick_start_date">Choose Start Date</string>
     <string name="pick_end_date">Choose Finish Date</string>
