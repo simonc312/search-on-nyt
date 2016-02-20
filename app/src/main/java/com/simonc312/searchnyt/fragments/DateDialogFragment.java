@@ -32,6 +32,7 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
     TextView btnSave;
     private FilterListener mListener;
     private Calendar calendar;
+    private Date minDate;
 
     public static DateDialogFragment newInstance(String date, int titleId){
         DateDialogFragment fragment = new DateDialogFragment();
@@ -47,6 +48,8 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
         super.onCreate(savedInstanceState);
         if(calendar == null)
             calendar = new GregorianCalendar();
+        if(minDate == null)
+            setMinDate(getString(R.string.earliestSearchBeginDate));
     }
 
     @Override
@@ -64,7 +67,7 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
         final String beginDate = getArguments().getString(DATE_EXTRA);
         getDialog().setTitle(title);
 
-        initializeDatePicker(beginDate);
+        initDatePicker(beginDate);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +95,27 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
         super.onDetach();
     }
 
-    private void initializeDatePicker(String date) {
+    @Override
+    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, monthOfYear);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    }
+
+    public DateDialogFragment setListener(FilterListener listener) {
+        mListener = listener;
+        return this;
+    }
+
+    public DateDialogFragment setMinDate(String date) {
+        if(date != null || !date.isEmpty())
+            this.minDate = getFilterParsedDate(date);
+        return this;
+    }
+
+    private void initDatePicker(String date) {
         long initialDateMilli = getMaxDate();
+        datePicker.setMinDate(getMinDate());
         datePicker.setMaxDate(initialDateMilli);
         datePicker.requestFocus();
         Calendar initialCalendar = DateHelper.getInstance().getCalendarFromLong(initialDateMilli);
@@ -130,16 +152,8 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
         return new Date().getTime();
     }
 
-    @Override
-    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH,monthOfYear);
-        calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-    }
-
-    public DateDialogFragment setListener(FilterListener listener) {
-        mListener = listener;
-        return this;
+    private long getMinDate(){
+        return minDate.getTime();
     }
 
     public interface FilterListener {

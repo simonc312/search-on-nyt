@@ -90,7 +90,8 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
 
     @OnClick(R.id.tv_endDate)
     public void handleEndDateClick(View view){
-        DateDialogFragment.newInstance(endDate,R.string.pick_end_date)
+        DateDialogFragment.newInstance(endDate, R.string.pick_end_date)
+                .setMinDate(beginDate)
                 .setListener(this)
                 .show(getChildFragmentManager(), "endDate");
     }
