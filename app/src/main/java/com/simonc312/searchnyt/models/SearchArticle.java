@@ -2,6 +2,8 @@ package com.simonc312.searchnyt.models;
 
 import android.util.Log;
 
+import com.simonc312.searchnyt.helpers.DateHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +61,7 @@ public class SearchArticle extends Article<MediaMetaData>{
 
     @Override
     public String getRelativeTimePosted() {
-        return "today";
+        return DateHelper.getInstance().getSearchRelativeTime(publishedDate);
     }
 
     @Override

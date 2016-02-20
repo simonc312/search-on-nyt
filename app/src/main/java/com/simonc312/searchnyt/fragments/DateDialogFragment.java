@@ -108,7 +108,7 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
     }
 
     public DateDialogFragment setMinDate(String date) {
-        if(date != null || !date.isEmpty())
+        if(date != null && !date.isEmpty())
             this.minDate = getFilterParsedDate(date);
         return this;
     }
@@ -118,13 +118,13 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
         datePicker.setMinDate(getMinDate());
         datePicker.setMaxDate(initialDateMilli);
         datePicker.requestFocus();
-        Calendar initialCalendar = DateHelper.getInstance().getCalendarFromLong(initialDateMilli);
+        Calendar initialCalendar;
         if(date != null && !date.isEmpty()) {
             Date initialDate = getFilterParsedDate(date);
-            if(initialDate != null) {
-                calendar.setTime(initialDate);
-                initialCalendar = calendar;
-            }
+            calendar.setTime(initialDate);
+            initialCalendar = calendar;
+        } else{
+            initialCalendar = DateHelper.getInstance().getCalendarFromLong(initialDateMilli);
         }
         initDateWithCalendar(initialCalendar);
     }

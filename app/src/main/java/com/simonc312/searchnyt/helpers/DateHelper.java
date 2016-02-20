@@ -17,6 +17,7 @@ public class DateHelper {
     private static SimpleDateFormat displayDateFormat = new SimpleDateFormat("MMM d");
     private static SimpleDateFormat displayOldDateFormat = new SimpleDateFormat("MMM d, yyyy");
     private static SimpleDateFormat filterDateFormat = new SimpleDateFormat("yyyyMMdd");
+    private static SimpleDateFormat searchDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     private final Calendar calendar;
     private final Calendar calendar2;
 
@@ -36,13 +37,18 @@ public class DateHelper {
      * @return
      */
     public String getRelativeTime(String date) {
-        try {
-            Date date1 = dateFormat.parse(date);
-            return getRelativeTime(date1);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+        Date date1 = parseDateWithFormat(date,dateFormat);
+        return getRelativeTime(date1);
+    }
+
+    /**
+     *
+     * @param date should be in format {@link DateHelper#searchDateFormat}
+     * @return
+     */
+    public String getSearchRelativeTime(String date){
+        Date date1 = parseDateWithFormat(date,searchDateFormat);
+        return getRelativeTime(date1);
     }
 
     public String getRelativeTime(Date date) {
@@ -66,12 +72,7 @@ public class DateHelper {
     }
 
     public Date getFilterParsedDate(String date) {
-        try {
-            return filterDateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return parseDateWithFormat(date,filterDateFormat);
     }
 
     public Calendar getCalendarFromLong(long date) {
@@ -85,12 +86,16 @@ public class DateHelper {
      * @return {@link String} after converting to {@link Date} => {@link DateHelper#getRelativeTime(Date)}
      */
     public String getRelativeFilterDate(String dateString) {
-        Date date = null;
+        Date date = parseDateWithFormat(dateString,filterDateFormat);
+        return getRelativeTime(date);
+    }
+
+    private Date parseDateWithFormat(String date, SimpleDateFormat format){
         try {
-            date = filterDateFormat.parse(dateString);
+            return format.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return getRelativeTime(date);
+        return null;
     }
 }
