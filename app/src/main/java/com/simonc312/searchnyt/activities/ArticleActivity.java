@@ -93,7 +93,8 @@ public class ArticleActivity extends AppCompatActivity{
     private void handleIntent(Intent intent){
         if(intent != null){
             article = intent.getParcelableExtra("article");
-            loadBackgroundImage(article.getJumboMetaData());
+            String backgroundUrl = intent.getStringExtra("background");
+            loadBackgroundImage(backgroundUrl);
             tv_headline.setText(article.getDisplayTitle());
             tv_byline.setText(article.getByline());
             tv_date.setText(article.getRelativeTimePosted());
@@ -103,12 +104,12 @@ public class ArticleActivity extends AppCompatActivity{
 
     }
 
-    private void loadBackgroundImage(MediaMetaData jumboMetaData) {
-        if(jumboMetaData == null)
+    private void loadBackgroundImage(String url) {
+        if(url == null)
             return;
         ImageLoaderHelper.loadWithPlaceholder(
                 this,
-                jumboMetaData.getUrl(),
+                url,
                 background,
                 R.drawable.image_placeholder_jumbo);
     }

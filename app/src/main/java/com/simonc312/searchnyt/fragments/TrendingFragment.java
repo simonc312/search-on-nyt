@@ -172,7 +172,11 @@ public class TrendingFragment extends Fragment
             recyclerView.scrollToPosition(position);
         } else {
             Intent intent = new Intent(getContext(),ArticleActivity.class);
-            intent.putExtra("article",adapter.getItem(position));
+            Article article = adapter.getItem(position);
+            MediaMetaData mediaMetaData = article.getJumboMetaData();
+            intent.putExtra("article", article);
+            if(mediaMetaData != null)
+                intent.putExtra("background",mediaMetaData.getUrl());
             startActivity(intent);
         }
     }
@@ -227,10 +231,7 @@ public class TrendingFragment extends Fragment
         });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(
-                android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+                R.color.colorAccent);
     }
 
     private void stopRefresh(){
