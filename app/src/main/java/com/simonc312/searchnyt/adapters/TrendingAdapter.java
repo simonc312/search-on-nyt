@@ -93,6 +93,10 @@ public class TrendingAdapter extends RecyclerView.Adapter<GridViewHolder>{
         return articleList.size();
     }
 
+    public Article getItem(int position) {
+        return articleList.get(position);
+    }
+
     public void addPost(Article post, boolean addToEnd){
         if(addToEnd){
             addPost(post, articleList.size());

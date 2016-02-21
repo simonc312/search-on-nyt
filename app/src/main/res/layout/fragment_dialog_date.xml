@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:padding="@dimen/default_margin">
 
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/AppTheme.TextAppearance.Title"/>
+
     <DatePicker
         android:id="@+id/dp_date"
         android:layout_width="match_parent"
@@ -12,6 +18,8 @@
        android:datePickerMode="spinner"
         android:calendarViewShown="false"
         android:minDate="@string/minCalendarBeginDate"
+        android:layout_below="@id/tv_dialog_title"
+        android:layout_marginTop="@dimen/default_margin"
         android:layout_marginBottom="@dimen/default_margin"/>
 
     <TextView

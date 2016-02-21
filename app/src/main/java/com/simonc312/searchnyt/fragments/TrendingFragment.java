@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.simonc312.searchnyt.activities.ArticleActivity;
 import com.simonc312.searchnyt.adapters.TrendingAdapter;
 import com.simonc312.searchnyt.api.AbstractApiRequest;
 import com.simonc312.searchnyt.api.ApiRequestInterface;
@@ -169,12 +170,16 @@ public class TrendingFragment extends Fragment
             adapter.setIsGridLayout(false);
             updateRV(recyclerView, getLinearLayout(), adapter);
             recyclerView.scrollToPosition(position);
+        } else {
+            Intent intent = new Intent(getContext(),ArticleActivity.class);
+            intent.putExtra("article",adapter.getItem(position));
+            startActivity(intent);
         }
     }
 
     @Override
     public void onSuccess(JSONObject response) {
-        Log.d("response",response.toString());
+        Log.d("response", response.toString());
         if(query != null)
             handleSearchSuccessResponse(response);
         else
@@ -206,7 +211,7 @@ public class TrendingFragment extends Fragment
 
     private void handleArguments(Bundle bundle) {
         if(!bundle.isEmpty()){
-            requestedLayout = bundle.getInt("layoutRequested",STAGGERED_LAYOUT);
+            requestedLayout = bundle.getInt("layoutRequested", STAGGERED_LAYOUT);
             query = bundle.getParcelable("query");
         }
     }

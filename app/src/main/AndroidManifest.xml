@@ -38,6 +38,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.simonc312.searchnyt.activities.SearchQueryActivity" />
         </activity>
+
+        <activity android:name=".activities.ArticleActivity">
+
+        </activity>
     </application>
 
 </manifest>

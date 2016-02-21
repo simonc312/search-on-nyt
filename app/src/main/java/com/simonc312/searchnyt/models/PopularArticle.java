@@ -1,5 +1,7 @@
 package com.simonc312.searchnyt.models;
 
+import android.os.Parcel;
+
 import com.simonc312.searchnyt.helpers.DateHelper;
 
 import java.util.ArrayList;
@@ -27,6 +29,10 @@ public class PopularArticle extends Article<PopularMedia>{
                 summary,
                 media
         );
+    }
+
+    public PopularArticle(Parcel in) {
+        super(in);
     }
 
     @Override
@@ -82,4 +88,16 @@ public class PopularArticle extends Article<PopularMedia>{
         }
         return source;
     }
+
+    public static final Creator<PopularArticle> CREATOR = new Creator<PopularArticle>() {
+        @Override
+        public PopularArticle createFromParcel(Parcel in) {
+            return new PopularArticle(in);
+        }
+
+        @Override
+        public PopularArticle[] newArray(int size) {
+            return new PopularArticle[size];
+        }
+    };
 }

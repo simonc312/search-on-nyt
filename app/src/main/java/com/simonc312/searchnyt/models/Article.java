@@ -1,5 +1,7 @@
 package com.simonc312.searchnyt.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -8,7 +10,7 @@ import java.util.List;
 /**
  * Created by Simon on 1/27/2016.
  */
-public abstract class Article<MediaType> {
+public abstract class Article<MediaType> implements Parcelable {
 
     private final String section;
     private final String title;
@@ -34,6 +36,30 @@ public abstract class Article<MediaType> {
         this.publishedDate = publishedDate;
         this.summary = summary;
         this.media = media;
+    }
+
+    protected Article(Parcel in) {
+        section = in.readString();
+        title = in.readString();
+        byline = in.readString();
+        publishedDate = in.readString();
+        summary = in.readString();
+        url = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(section);
+        dest.writeString(title);
+        dest.writeString(byline);
+        dest.writeString(publishedDate);
+        dest.writeString(summary);
+        dest.writeString(url);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public String getSection(){return section;}

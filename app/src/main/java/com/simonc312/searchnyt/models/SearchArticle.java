@@ -1,5 +1,7 @@
 package com.simonc312.searchnyt.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.simonc312.searchnyt.helpers.DateHelper;
@@ -34,6 +36,11 @@ public class SearchArticle extends Article<MediaMetaData>{
         );
 
         this.wordCount = wordCount;
+    }
+
+    protected SearchArticle(Parcel in){
+        super(in);
+        wordCount = in.readString();
     }
 
     public String getWordCount(){
@@ -89,4 +96,23 @@ public class SearchArticle extends Article<MediaMetaData>{
         formatList.add(MediaMetaData.THUMBNAIL_FORMAT);
         return getAnyImage(formatList);
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags){
+        super.writeToParcel(dest,flags);
+        dest.writeString(wordCount);
+
+    }
+
+    public static final Creator<SearchArticle> CREATOR = new Creator<SearchArticle>() {
+        @Override
+        public SearchArticle createFromParcel(Parcel in) {
+            return new SearchArticle(in);
+        }
+
+        @Override
+        public SearchArticle[] newArray(int size) {
+            return new SearchArticle[size];
+        }
+    };
 }

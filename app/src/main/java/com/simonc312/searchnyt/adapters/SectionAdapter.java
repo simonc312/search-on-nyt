@@ -30,6 +30,13 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionViewHolder> impl
         return sections;
     }
 
+    public void uncheckSections() {
+        for(Section section: sections){
+            section.setIsChecked(false);
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public void updateSection(int adapterPosition, boolean checked) {
         sections.get(adapterPosition).setIsChecked(checked);

@@ -74,6 +74,7 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
         View view = inflater.inflate(R.layout.fragment_filter, container, false);
         ButterKnife.bind(this, view);
         adapter = new SectionAdapter(getContext(), getSections());
+        rv_sections.setHasFixedSize(true);
         rv_sections.setAdapter(adapter);
         rv_sections.setLayoutManager(new GridLayoutManager(getContext(),SECTION_GRID_SPAN_COUNT));
         return view;
@@ -119,6 +120,7 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
         beginDate = null;
         endDate = null;
         sections = null;
+        adapter.uncheckSections();
         mListener.onApplyFilter(beginDate, endDate, sections, false);
 
     }
@@ -147,7 +149,7 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
         String[] sections = getContext().getResources().getStringArray(R.array.sections_array);
         List<Section> sectionList = new ArrayList<>(sections.length);
         for(String section : sections){
-            sectionList.add(new Section(section,true));
+            sectionList.add(new Section(section,false));
         }
         return sectionList;
     }

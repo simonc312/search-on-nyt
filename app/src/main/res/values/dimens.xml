@@ -9,6 +9,7 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="margin_4">4dp</dimen>
     <dimen name="margin_8">8dp</dimen>
+    <dimen name="collapsing_toolbar_height">256dp</dimen>
 
     //image asset dimens
     <dimen name="thumbnail_size">75px</dimen>

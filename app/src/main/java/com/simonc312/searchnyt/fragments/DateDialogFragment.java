@@ -25,6 +25,7 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
 
     private static final String DATE_EXTRA = "date_extra";
     private static final String TITLE_EXTRA = "title_extra";
+    @Bind(R.id.tv_dialog_title) TextView tv_title;
     @Bind(R.id.dp_date) DatePicker datePicker;
     @Bind(R.id.btn_default)
     TextView btnCancel;
@@ -65,7 +66,7 @@ public class DateDialogFragment extends DialogFragment implements DatePicker.OnD
 
         final int title = getArguments().getInt(TITLE_EXTRA,R.string.pick_date);
         final String beginDate = getArguments().getString(DATE_EXTRA);
-        getDialog().setTitle(title);
+        tv_title.setText(title);
 
         initDatePicker(beginDate);
 
