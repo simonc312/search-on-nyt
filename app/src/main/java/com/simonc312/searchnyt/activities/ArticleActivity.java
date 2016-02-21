@@ -15,6 +15,7 @@ import com.simonc312.searchnyt.helpers.ImageLoaderHelper;
 import com.simonc312.searchnyt.models.Article;
 import com.simonc312.searchnyt.models.MediaMetaData;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import butterknife.Bind;
@@ -113,7 +114,14 @@ public class ArticleActivity extends AppCompatActivity{
     }
 
     private void linkifyUrl(TextView textView, String url){
+        final String actualUrl = url;
         Pattern pattern = Pattern.compile("(.)");
-        Linkify.addLinks(textView,pattern,url);
+        Linkify.TransformFilter filter = new Linkify.TransformFilter() {
+            @Override
+            public String transformUrl(Matcher match, String url) {
+                return actualUrl;
+            }
+        };
+        Linkify.addLinks(textView,pattern,url,null,filter);
     }
 }

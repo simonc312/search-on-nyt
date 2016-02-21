@@ -27,7 +27,8 @@ public class SearchArticleDeserializer extends JsonDeserializer<SearchArticle>{
         JsonNode bylineNode = node.get("byline").get("original");
         String byline = bylineNode != null ? bylineNode.asText() : "";
         String pubDate = node.get("pub_date").asText();
-        String summary = node.get("snippet").asText();
+        JsonNode leadParagraph = node.get("lead_paragraph");
+        String summary = leadParagraph.isNull() ? node.get("snippet").asText() : leadParagraph.asText();
         String wordCount = node.get("word_count").asText();
         JsonNode mediaNode = node.get("multimedia");
         ObjectMapper mapper = new ObjectMapper()

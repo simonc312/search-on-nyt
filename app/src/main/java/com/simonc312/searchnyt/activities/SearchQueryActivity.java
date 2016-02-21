@@ -42,7 +42,7 @@ public class SearchQueryActivity extends AppCompatActivity
     private void setupSearchQuery() {
         String defaultBeginDate = getString(R.string.earliestSearchBeginDate);
         String defaultEndDate = DateHelper.getInstance().getFilterFormatDate(new Date());
-        String defaultSections = "\"Article\"";
+        String defaultSections = null;
         searchQuery = new SearchQuery("",defaultBeginDate,defaultEndDate,defaultSections);
     }
 

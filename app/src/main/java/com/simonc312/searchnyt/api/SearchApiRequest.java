@@ -32,8 +32,8 @@ public class SearchApiRequest extends AbstractApiRequest {
     }
 
     public void setSections(String sections){
-        putParam("fq",String.format("section_name:(%s)",sections));
-        //putParam("fq","section_name:(\"Article\" \"Blog\" \"Column\" \"Front Page\" \"Editorial\" \"Interview\" \"News\" \"Op-Ed\" \"Obituary\" \"SectionFront\")");
+        if(sections != null && !sections.isEmpty())
+            putParam("fq",String.format("section_name:(%s)",sections));
     }
 
     @Override
