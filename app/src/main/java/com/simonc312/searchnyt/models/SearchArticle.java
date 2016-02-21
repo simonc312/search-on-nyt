@@ -1,7 +1,6 @@
 package com.simonc312.searchnyt.models;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import com.simonc312.searchnyt.helpers.DateHelper;
@@ -48,6 +47,8 @@ public class SearchArticle extends Article<MediaMetaData>{
     }
 
     public MediaMetaData getAnyImage(List<String> formats) {
+        if(!hasMedia())
+            return null;
         MediaMetaData metaData;
         for(String format : formats){
             metaData = getImageFormat(format);

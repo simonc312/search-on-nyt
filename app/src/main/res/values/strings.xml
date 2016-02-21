@@ -25,4 +25,8 @@
     <string name="pick_end_date">Choose Finish Date</string>
     <string name="btn_all_set">All Set</string>
     <string name="sections">Sections</string>
+    <string name="action_share">Share</string>
+    <string name="share_chooser_title">Share Article with ...</string>
+    <string name="shared_with_app">Shared with Simon Chen\'s Search NYTimes App</string>
+    <string name="read_article">Read Full Article</string>
 </resources>

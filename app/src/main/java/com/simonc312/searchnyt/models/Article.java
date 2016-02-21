@@ -101,6 +101,10 @@ public abstract class Article<MediaType> implements Parcelable {
 
     public Spanned getDisplayTitle(){ return Html.fromHtml(title);}
 
+    public boolean hasMedia(){
+        return media != null && !media.isEmpty();
+    }
+
     public abstract String getRelativeTimePosted();
 
     public abstract MediaMetaData getMetaData(String format);

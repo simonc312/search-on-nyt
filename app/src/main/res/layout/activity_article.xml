@@ -20,12 +20,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_section"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/AppTheme.TextAppearance.Search.Bold" />
-
-            <TextView
                 android:id="@+id/tv_headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,6 +45,16 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:paddingTop="@dimen/default_margin" />
 
+            <TextView
+                android:id="@+id/tv_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/default_margin"
+                android:paddingRight="@dimen/default_margin"
+                android:text="@string/read_article"
+                android:singleLine="true"
+                android:ellipsize="none"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
         </LinearLayout>
 
