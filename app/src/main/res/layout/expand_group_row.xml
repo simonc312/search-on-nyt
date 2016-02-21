@@ -9,4 +9,6 @@
     android:gravity="center"
     android:background="@drawable/checkable_list_item_background"
     android:padding="@dimen/default_margin"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     />

@@ -14,12 +14,14 @@ import android.widget.TextView;
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.adapters.SectionAdapter;
 import com.simonc312.searchnyt.helpers.DateHelper;
+import com.simonc312.searchnyt.helpers.GridItemDecoration;
 import com.simonc312.searchnyt.models.Section;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.BindInt;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,6 +32,11 @@ import butterknife.OnClick;
  * interface.
  */
 public class FilterFragment extends Fragment implements DateDialogFragment.FilterListener{
+    @BindInt(R.integer.grid_layout_span_count)
+    int GRID_LAYOUT_SPAN_COUNT;
+    @BindInt(R.integer.grid_layout_item_spacing)
+    int GRID_LAYOUT_ITEM_SPACING;
+
     @Bind(R.id.tv_beginDate)
     TextView tv_beginDate;
     @Bind(R.id.tv_endDate)
@@ -43,7 +50,6 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
     private String sections;
 
     private InteractionListener mListener;
-    private static int SECTION_GRID_SPAN_COUNT = 3;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -76,7 +82,8 @@ public class FilterFragment extends Fragment implements DateDialogFragment.Filte
         adapter = new SectionAdapter(getContext(), getSections());
         rv_sections.setHasFixedSize(true);
         rv_sections.setAdapter(adapter);
-        rv_sections.setLayoutManager(new GridLayoutManager(getContext(),SECTION_GRID_SPAN_COUNT));
+        rv_sections.setLayoutManager(new GridLayoutManager(getContext(), GRID_LAYOUT_SPAN_COUNT));
+        rv_sections.addItemDecoration(new GridItemDecoration(GRID_LAYOUT_SPAN_COUNT,GRID_LAYOUT_ITEM_SPACING,false));
         return view;
     }
 
