@@ -4,7 +4,7 @@ Project Week 2 for Codepath Android Dev Bootcamp.
 
 [logo]: https://github.com/simonc312/search-on-nyt/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png
 
-![walkthrough gif](https://github.com/simonc312/trending-on-instagram/blob/master/screenCapture/TrendingOnInstagramWalkthrough.gif)
+![walkthrough gif](https://github.com/simonc312/trending-on-instagram/blob/master/screenCapture/SearchNYTWalkthrough.gif)
 
 ## Features:
 
@@ -25,9 +25,9 @@ Project Week 2 for Codepath Android Dev Bootcamp.
 - Components
     
     - [x] Most Popular Home page
-    - [ ] Individual Article View
-    - [ ] Search Fields Dialog
-    - [ ] Searchview   
+    - [x] Individual Article View
+    - [x] Search Fields Dialog
+    - [x] Searchview   
 
 - Style:
 
@@ -37,6 +37,10 @@ Project Week 2 for Codepath Android Dev Bootcamp.
     - [x] Endless bottom scrolling
     - [x] Jumbo image view for first item 
     - [x] Staggered layout manager
+    - [x] Enable article sharing
+    - [x] Follow web url to read full article online
+    - [x] Collapsible toolbar for individual articles
+    - [x] Relative dates for date picker display
     - [ ] Prevent reloading if no wifi detected
     - [ ] Display error image if failed to load 
     
