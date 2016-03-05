@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * For displaying individual articles
@@ -77,7 +78,9 @@ public class ArticleActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private void startShareIntent() {
+
+    @OnClick(R.id.share_fab)
+    public void startShareIntent() {
         String shareString = String.format("%s\n%s\n%s",
                 article.getTitle(),
                 article.getUrl(),

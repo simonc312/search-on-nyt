@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="placeholder_color">@color/md_grey_300</color>
     <color name="item_header_color">@color/md_grey_200</color>
+    <color name="endGradientColor">@color/md_black_1000_transparent90</color>
 </resources>
