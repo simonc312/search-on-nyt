@@ -4,7 +4,7 @@ Project Week 2 for Codepath Android Dev Bootcamp.
 
 [logo]: https://github.com/simonc312/search-on-nyt/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png
 
-![walkthrough gif](https://github.com/simonc312/trending-on-instagram/blob/master/screenCapture/SearchNYTWalkthrough.gif)
+![walkthrough gif](https://github.com/simonc312/search-on-nyt/blob/master/screenCapture/SearchNYTWalkthrough.gif)
 
 ## Features:
 
