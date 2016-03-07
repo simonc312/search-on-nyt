@@ -2,6 +2,8 @@ package com.simonc312.searchnyt.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
@@ -13,7 +15,6 @@ import android.widget.TextView;
 import com.simonc312.searchnyt.R;
 import com.simonc312.searchnyt.helpers.ImageLoaderHelper;
 import com.simonc312.searchnyt.models.Article;
-import com.simonc312.searchnyt.models.MediaMetaData;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +28,8 @@ import butterknife.OnClick;
  * Created by Simon on 2/20/2016.
  */
 public class ArticleActivity extends AppCompatActivity{
-
+    @Bind(R.id.appbar)
+    AppBarLayout appBarLayout;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.iv_background)
@@ -58,11 +60,22 @@ public class ArticleActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(article.getSection());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.home_as_up_selector);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            int threshold = 60;
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange() - threshold){
+                    appBarLayout.setActivated(true);
+                } else appBarLayout.setActivated(false);
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.share_menu, menu);
+        // not using share menu for now
+        //getMenuInflater().inflate(R.menu.share_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -71,6 +84,7 @@ public class ArticleActivity extends AppCompatActivity{
         switch(item.getItemId()){
             case android.R.id.home:
                 finish();
+                return true;
             case R.id.action_share:
                 startShareIntent();
                 return true;
