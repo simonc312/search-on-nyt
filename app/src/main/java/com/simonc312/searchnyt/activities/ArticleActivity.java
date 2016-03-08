@@ -1,7 +1,9 @@
 package com.simonc312.searchnyt.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import butterknife.Bind;
+import butterknife.BindColor;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -44,6 +48,9 @@ public class ArticleActivity extends AppCompatActivity{
     TextView tv_body;
     @Bind(R.id.tv_url)
     TextView tv_url;
+    //used for custom tabs
+    @BindColor(R.color.colorPrimary)
+    int colorPrimary;
 
     private Article article;
 
@@ -133,13 +140,19 @@ public class ArticleActivity extends AppCompatActivity{
 
     private void linkifyUrl(TextView textView, String url){
         final String actualUrl = url;
-        Pattern pattern = Pattern.compile("(.)");
-        Linkify.TransformFilter filter = new Linkify.TransformFilter() {
+
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.enableUrlBarHiding();
+        builder.addDefaultShareMenuItem();
+        builder.setShowTitle(true);
+        builder.setToolbarColor(colorPrimary);
+        final CustomTabsIntent intent = builder.build();
+
+        textView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public String transformUrl(Matcher match, String url) {
-                return actualUrl;
+            public void onClick(View v) {
+                intent.launchUrl(ArticleActivity.this, Uri.parse(actualUrl));
             }
-        };
-        Linkify.addLinks(textView,pattern,url,null,filter);
+        });
     }
 }
